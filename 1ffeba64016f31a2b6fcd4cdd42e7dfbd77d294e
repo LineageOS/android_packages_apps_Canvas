@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31abb62f_773c1837",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10067
+      },
+      "writtenOn": "2026-10-04T15:35:47Z",
+      "side": 1,
+      "message": "works, I don\u0027t like the icon for it.",
+      "revId": "1ffeba64016f31a2b6fcd4cdd42e7dfbd77d294e",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
