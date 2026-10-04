@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "789edaac_4e88a239",
+        "filename": "app/src/main/java/org/lineageos/canvas/ui/composables/CanvasBottomBar.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 10067
+      },
+      "writtenOn": "2026-10-04T14:28:33Z",
+      "side": 1,
+      "message": "over 100 ch ;(",
+      "revId": "eb5d8f1e9d02069a7729ba1b81f3f2ab23e5c862",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
