@@ -14,55 +14,85 @@ import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 
-fun brightnessColorFilter(value: Float): ColorFilter = ColorFilter.colorMatrix(
-    ColorMatrix(
+/**
+ * Adjusts brightness.
+ * @param value Range [-1f..1f]. -1f is pure black, 0f is identity, 1f is pure white.
+ */
+fun brightnessColorFilter(value: Float): ColorFilter {
+    val offset = value.coerceIn(-1f, 1f) * 255f
+    val matrix = ColorMatrix(
         floatArrayOf(
-            1f, 0f, 0f, 0f, value * 255f,
-            0f, 1f, 0f, 0f, value * 255f,
-            0f, 0f, 1f, 0f, value * 255f,
-            0f, 0f, 0f, 1f, 0f,
-        ),
-    ),
-)
-
-fun contrastColorFilter(value: Float): ColorFilter {
-    val offset = 0.5f * (1f - value) * 255f
-    return ColorFilter.colorMatrix(
-        ColorMatrix(
-            floatArrayOf(
-                value, 0f, 0f, 0f, offset,
-                0f, value, 0f, 0f, offset,
-                0f, 0f, value, 0f, offset,
-                0f, 0f, 0f, 1f, 0f,
-            ),
-        ),
+            1f, 0f, 0f, 0f, offset,
+            0f, 1f, 0f, 0f, offset,
+            0f, 0f, 1f, 0f, offset,
+            0f, 0f, 0f, 1f, 0f
+        )
     )
+    return ColorFilter.colorMatrix(matrix)
 }
 
-fun sepiaColorFilter(amount: Float): ColorFilter = ColorFilter.colorMatrix(
-    ColorMatrix(
+/**
+ * Adjusts contrast.
+ * @param value Range [0f..2f]. 0f is solid mid-grey, 1f is identity, 2f is high contrast.
+ */
+fun contrastColorFilter(value: Float): ColorFilter {
+    val scale = value.coerceIn(0f, 2f)
+    val offset = (1f - scale) * 128f
+    val matrix = ColorMatrix(
         floatArrayOf(
-            1f - 0.607f * amount, 0.769f * amount, 0.189f * amount, 0f, 0f,
-            0.349f * amount, 1f - 0.314f * amount, 0.168f * amount, 0f, 0f,
-            0.272f * amount, 0.534f * amount, 1f - 0.869f * amount, 0f, 0f,
-            0f, 0f, 0f, 1f, 0f,
-        ),
-    ),
-)
+            scale, 0f, 0f, 0f, offset,
+            0f, scale, 0f, 0f, offset,
+            0f, 0f, scale, 0f, offset,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )
+    return ColorFilter.colorMatrix(matrix)
+}
 
-fun greyColorFilter(saturation: Float): ColorFilter = ColorFilter.colorMatrix(
-    ColorMatrix(
+
+/**
+ * Applies a sepia tone.
+ * @param value Range [0f..1f]. 0f is identity, 1f is full sepia tone.
+ */
+fun sepiaColorFilter(value: Float): ColorFilter {
+    val t = value.coerceIn(0f, 1f)
+    val inv = 1f - t
+
+    // Standard W3C / Rec.601 sepia transformation coefficients blended with identity
+    val matrix = ColorMatrix(
         floatArrayOf(
-            0.213f + 0.787f * saturation, 0.715f - 0.715f * saturation,
-            0.072f - 0.072f * saturation, 0f, 0f,
-            0.213f - 0.213f * saturation, 0.715f + 0.285f * saturation,
-            0.072f - 0.072f * saturation, 0f, 0f,
-            0.213f - 0.213f * saturation, 0.715f - 0.715f * saturation,
-            0.072f + 0.928f * saturation, 0f, 0f,
-            0f, 0f, 0f, 1f, 0f,
-        ),
-    ),
-)
+            inv + t * 0.393f, t * 0.769f, t * 0.189f, 0f, 0f,
+            t * 0.349f, inv + t * 0.686f, t * 0.168f, 0f, 0f,
+            t * 0.272f, t * 0.534f, inv + t * 0.131f, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )
+    return ColorFilter.colorMatrix(matrix)
+}
+
+/**
+ * Desaturates colors to greyscale.
+ * @param value Range [0f..1f]. 0f is identity, 1f is full greyscale.
+ */
+fun greyColorFilter(value: Float): ColorFilter {
+    val t = value.coerceIn(0f, 1f)
+    val inv = 1f - t
+
+    // ITU-R BT.601 luma weights (0.299 R, 0.587 G, 0.114 B) linearly interpolated with identity
+    val r = 0.299f * t
+    val g = 0.587f * t
+    val b = 0.114f * t
+
+    val matrix = ColorMatrix(
+        floatArrayOf(
+            inv + r, g, b, 0f, 0f,
+            r, inv + g, b, 0f, 0f,
+            r, g, inv + b, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )
+    return ColorFilter.colorMatrix(matrix)
+}
 
 fun ImageBitmap.adjustBrightness(value: Float): ImageBitmap {
     if (value == 0f) return this
