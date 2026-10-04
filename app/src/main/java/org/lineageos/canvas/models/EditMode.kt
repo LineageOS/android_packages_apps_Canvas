@@ -42,7 +42,12 @@ enum class EditMode(val category: Category) {
     /**
      * Contrast adjustment.
      */
-    CONTRAST(Category.ADJUSTMENTS);
+    CONTRAST(Category.ADJUSTMENTS),
+
+    /**
+     * Image filters.
+     */
+    FILTERS(Category.ADJUSTMENTS);
 
     companion object {
         private val groupedByCategory = entries.groupBy(EditMode::category)

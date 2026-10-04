@@ -39,6 +39,31 @@ fun contrastColorFilter(value: Float): ColorFilter {
     )
 }
 
+fun sepiaColorFilter(amount: Float): ColorFilter = ColorFilter.colorMatrix(
+    ColorMatrix(
+        floatArrayOf(
+            1f - 0.607f * amount, 0.769f * amount, 0.189f * amount, 0f, 0f,
+            0.349f * amount, 1f - 0.314f * amount, 0.168f * amount, 0f, 0f,
+            0.272f * amount, 0.534f * amount, 1f - 0.869f * amount, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f,
+        ),
+    ),
+)
+
+fun greyColorFilter(saturation: Float): ColorFilter = ColorFilter.colorMatrix(
+    ColorMatrix(
+        floatArrayOf(
+            0.213f + 0.787f * saturation, 0.715f - 0.715f * saturation,
+            0.072f - 0.072f * saturation, 0f, 0f,
+            0.213f - 0.213f * saturation, 0.715f + 0.285f * saturation,
+            0.072f - 0.072f * saturation, 0f, 0f,
+            0.213f - 0.213f * saturation, 0.715f - 0.715f * saturation,
+            0.072f + 0.928f * saturation, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f,
+        ),
+    ),
+)
+
 fun ImageBitmap.adjustBrightness(value: Float): ImageBitmap {
     if (value == 0f) return this
 
@@ -85,6 +110,36 @@ fun ImageBitmap.adjustContrast(value: Float): ImageBitmap {
         drawImage(
             image = this@adjustContrast,
             colorFilter = contrastColorFilter(value),
+        )
+    }
+
+    return output
+}
+
+fun ImageBitmap.applySepia(amount: Float): ImageBitmap =
+    if (amount == 0f) this else applyColorFilter(sepiaColorFilter(amount))
+
+fun ImageBitmap.applyGrey(saturation: Float): ImageBitmap =
+    if (saturation == 1f) this else applyColorFilter(greyColorFilter(saturation))
+
+private fun ImageBitmap.applyColorFilter(colorFilter: ColorFilter): ImageBitmap {
+    val output = ImageBitmap(
+        width = width,
+        height = height,
+        config = config,
+        hasAlpha = hasAlpha,
+        colorSpace = colorSpace,
+    )
+
+    CanvasDrawScope().draw(
+        density = Density(1f),
+        layoutDirection = LayoutDirection.Ltr,
+        canvas = Canvas(output),
+        size = Size(width.toFloat(), height.toFloat()),
+    ) {
+        drawImage(
+            image = this@applyColorFilter,
+            colorFilter = colorFilter,
         )
     }
 

@@ -32,6 +32,20 @@ sealed interface Action {
          * @param value The contrast value
          */
         data class Contrast(val value: Float) : Adjustment
+
+        /**
+         * Apply the sepia color matrix.
+         *
+         * @param amount 0 keeps the original colors; 1 applies full sepia.
+         */
+        data class Sepia(val amount: Float) : Adjustment
+
+        /**
+         * Apply the grey color matrix.
+         *
+         * @param saturation 0 is fully grey; 1 keeps the original colors.
+         */
+        data class Grey(val saturation: Float) : Adjustment
     }
 
     /**

@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.CropRotate
 import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Exposure
+import androidx.compose.material.icons.filled.Filter
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.Transform
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
@@ -316,6 +317,7 @@ fun EditModeButton(
             EditMode.TEXT -> R.string.edit_mode_text
             EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
             EditMode.CONTRAST -> R.string.edit_mode_contrast
+            EditMode.FILTERS -> R.string.edit_mode_filters
         }
     )
     ToolbarTooltip(description) {
@@ -332,6 +334,7 @@ fun EditModeButton(
                     EditMode.TEXT -> Icons.Filled.TextFields
                     EditMode.BRIGHTNESS -> Icons.Filled.BrightnessMedium
                     EditMode.CONTRAST -> Icons.Filled.Contrast
+                    EditMode.FILTERS -> Icons.Filled.Filter
                 },
                 contentDescription = description,
             )

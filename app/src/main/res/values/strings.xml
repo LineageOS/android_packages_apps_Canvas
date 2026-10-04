@@ -32,6 +32,7 @@
     <string name="edit_mode_text">Text</string>
     <string name="edit_mode_brightness">Brightness</string>
     <string name="edit_mode_contrast">Contrast</string>
+    <string name="edit_mode_filters">Filters</string>
 
     <!-- Rotation -->
     <string name="rotate_counterclockwise">Rotate counterclockwise</string>
@@ -39,6 +40,13 @@
 
     <!-- Adjustments -->
     <string name="adjustment_percent">%1$.0f%%</string>
+
+    <!-- Filters -->
+    <string name="filter_none">Original</string>
+    <string name="filter_grey">Grey</string>
+    <string name="filter_sepia">Sepia</string>
+    <string name="filter_select_hint">Select a filter to preview</string>
+    <string name="filter_tap_again_to_adjust">Tap selected filter again to adjust</string>
 
     <!-- Drawing colors -->
     <string name="color_white">White</string>

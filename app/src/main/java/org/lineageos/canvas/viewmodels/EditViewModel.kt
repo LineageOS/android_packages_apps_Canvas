@@ -50,6 +50,8 @@ import kotlinx.coroutines.flow.stateIn
 import org.lineageos.canvas.ext.rotateBy
 import org.lineageos.canvas.ext.adjustBrightness
 import org.lineageos.canvas.ext.adjustContrast
+import org.lineageos.canvas.ext.applyGrey
+import org.lineageos.canvas.ext.applySepia
 import org.lineageos.canvas.ext.size
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.models.HistoryList
@@ -262,6 +264,8 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
     private fun ImageBitmap.applyAction(action: Action): ImageBitmap = when (action) {
         is Action.Adjustment.Brightness -> adjustBrightness(action.value)
         is Action.Adjustment.Contrast -> adjustContrast(action.value)
+        is Action.Adjustment.Grey -> applyGrey(action.saturation)
+        is Action.Adjustment.Sepia -> applySepia(action.amount)
         is Action.Transformation.Crop -> crop(action.rect)
         is Action.Transformation.Rotation -> rotateBy(action.rotation)
         is Action.Drawing -> createEmptyBitmap(hasAlpha = true).draw {
@@ -278,6 +282,14 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 is Action.Adjustment.Contrast -> {
+                    // Handled by the action replay pipeline
+                }
+
+                is Action.Adjustment.Grey -> {
+                    // Handled by the action replay pipeline
+                }
+
+                is Action.Adjustment.Sepia -> {
                     // Handled by the action replay pipeline
                 }
             }

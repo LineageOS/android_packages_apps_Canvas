@@ -70,6 +70,7 @@ fun CanvasTopAppBar(
                     EditMode.TEXT -> R.string.edit_mode_text
                     EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
                     EditMode.CONTRAST -> R.string.edit_mode_contrast
+                    EditMode.FILTERS -> R.string.edit_mode_filters
                 }
             }?.let {
                 Text(text = stringResource(it))
