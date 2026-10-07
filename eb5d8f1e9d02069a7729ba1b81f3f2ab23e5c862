@@ -16,6 +16,24 @@
       "message": "over 100 ch ;(",
       "revId": "eb5d8f1e9d02069a7729ba1b81f3f2ab23e5c862",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "875bcfdc_a9309bd8",
+        "filename": "app/src/main/java/org/lineageos/canvas/ui/composables/CanvasBottomBar.kt",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 11883
+      },
+      "writtenOn": "2026-10-07T13:48:12Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "789edaac_4e88a239",
+      "revId": "eb5d8f1e9d02069a7729ba1b81f3f2ab23e5c862",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
   ],
   "submitRequirementResults": [
