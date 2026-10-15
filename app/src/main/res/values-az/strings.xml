@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="close">Bağla</string>
+    <string name="back">Geri</string>
+    <string name="cancel_action">Əməliyyatı ləğv et</string>
+    <string name="confirm_action">Əməliyyatı təsdiqlə</string>
+    <string name="undo">Geri al</string>
+    <string name="redo">Təkrar et</string>
+    <string name="save">Saxla</string>
+    <string name="save_as">Saxla…</string>
+    <string name="share">Paylaş</string>
+    <string name="more">Daha çox…</string>
+    <string name="category_transformation">Təsviri dəyişdir</string>
+    <string name="category_drawing">Çəkmə alətləri</string>
+    <string name="category_adjustments">Təsvir ayarlamaları</string>
+    <string name="edit_mode_crop">Qayçıla</string>
+    <string name="edit_mode_rotation">Döndər</string>
+    <string name="edit_mode_marker">Marker</string>
+    <string name="edit_mode_highlighter">Vurğulama</string>
+    <string name="edit_mode_text">Mətn</string>
+    <string name="edit_mode_brightness">Parlaqlıq</string>
+    <string name="edit_mode_contrast">Kontrast</string>
+    <string name="edit_mode_filters">Filtrlər</string>
+    <string name="rotate_counterclockwise">Saat əqrəbinin əksinə döndər</string>
+    <string name="rotate_clockwise">Saat əqrəbində göndər</string>
+    <string name="filter_none">Orijinal</string>
+    <string name="filter_grey">Boz</string>
+    <string name="filter_sepia">Sepiya</string>
+    <string name="filter_select_hint">Önizləmək üçün bir filtr seç</string>
+    <string name="filter_tap_again_to_adjust">Ayarlamaq üçün seçilmiş filtrə təkrar toxun</string>
+    <string name="color_white">Ağ</string>
+    <string name="color_black">Qara</string>
+    <string name="color_red">Qırmızı</string>
+    <string name="color_green">Yaşıl</string>
+    <string name="color_blue">Göy</string>
+    <string name="color_yellow">Sarı</string>
+    <string name="color_cyan">Açıq göy</string>
+    <string name="color_magenta">Madjenta</string>
+    <string name="enter_text">Mətni daxil et…</string>
+    <string name="text_decoration_bold">Qalın</string>
+    <string name="text_decoration_italic">Meylli</string>
+    <string name="text_decoration_underlined">Altdan xətt</string>
+    <string name="text_decoration_strikethrough">Üstündən xətt</string>
+    <string name="text_alignment_left">Sol</string>
+    <string name="text_alignment_center">Mərkəz</string>
+    <string name="text_alignment_right">Sağ</string>
+    <string name="text_color_white">Ağ</string>
+    <string name="text_color_black">Qara</string>
+    <string name="text_color_red">Qırmızı</string>
+    <string name="text_color_green">Yaşıl</string>
+    <string name="text_color_blue">Göy</string>
+    <string name="text_color_yellow">Sarı</string>
+    <string name="text_color_cyan">Firuzəyi</string>
+    <string name="text_color_magenta">Madjenta</string>
+</resources>

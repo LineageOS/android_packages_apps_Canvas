@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="close">Tutup</string>
+    <string name="back">Kembali</string>
+    <string name="save">Simpan</string>
+    <string name="save_as">Simpan sebagai…</string>
+    <string name="share">Bagikan</string>
+    <string name="more">Lainnya...</string>
+    <string name="edit_mode_crop">Potong</string>
+    <string name="edit_mode_rotation">Rotasi</string>
+    <string name="edit_mode_text">Teks</string>
+    <string name="edit_mode_brightness">Kecerahan</string>
+    <string name="edit_mode_contrast">Kontras</string>
+    <string name="edit_mode_filters">Filter</string>
+    <string name="filter_grey">Abu-abu</string>
+    <string name="color_white">Putih</string>
+    <string name="color_black">Hitam</string>
+    <string name="color_red">Merah</string>
+    <string name="color_green">Hijau</string>
+    <string name="color_blue">Biru</string>
+    <string name="color_yellow">Kuning</string>
+    <string name="color_magenta">Magenta</string>
+    <string name="enter_text">Masukkan teks…</string>
+    <string name="text_decoration_bold">Tebal</string>
+    <string name="text_decoration_italic">Miring</string>
+    <string name="text_decoration_underlined">Bergaris bawah</string>
+    <string name="text_alignment_left">Kiri</string>
+    <string name="text_alignment_center">Tengah</string>
+    <string name="text_alignment_right">Kanan</string>
+    <string name="text_color_white">Putih</string>
+    <string name="text_color_black">Hitam</string>
+    <string name="text_color_red">Merah</string>
+    <string name="text_color_green">Hijau</string>
+    <string name="text_color_blue">Biru</string>
+    <string name="text_color_yellow">Kuning</string>
+    <string name="text_color_magenta">Magenta</string>
+</resources>

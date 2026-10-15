@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="close">Đóng</string>
+    <string name="back">Quay lại</string>
+    <string name="cancel_action">Hủy thao tác</string>
+    <string name="confirm_action">Xác nhận thao tác</string>
+    <string name="undo">Hoàn tác</string>
+    <string name="redo">Làm lại</string>
+    <string name="save">Lưu</string>
+    <string name="save_as">Lưu dưới dạng…</string>
+    <string name="share">Chia sẻ</string>
+    <string name="more">Thêm…</string>
+    <string name="category_transformation">Biến đổi hình ảnh</string>
+    <string name="category_drawing">Công cụ vẽ</string>
+    <string name="category_adjustments">Điều chỉnh hình ảnh</string>
+    <string name="edit_mode_crop">Cắt</string>
+    <string name="edit_mode_rotation">Xoay</string>
+    <string name="edit_mode_marker">Đánh dấu</string>
+    <string name="edit_mode_highlighter">Tô sáng</string>
+    <string name="edit_mode_text">Văn bản</string>
+    <string name="edit_mode_brightness">Độ sáng</string>
+    <string name="edit_mode_contrast">Độ tương phản</string>
+    <string name="edit_mode_filters">Bộ lọc</string>
+    <string name="rotate_counterclockwise">Xoay ngược chiều kim đồng hồ</string>
+    <string name="rotate_clockwise">Xoay theo chiều kim đồng hồ</string>
+    <string name="filter_none">Gốc</string>
+    <string name="filter_grey">Xám</string>
+    <string name="filter_sepia">Nâu đỏ</string>
+    <string name="filter_select_hint">Chọn bộ lọc để xem trước</string>
+    <string name="filter_tap_again_to_adjust">Nhấn lại vào bộ lọc đã chọn để điều chỉnh</string>
+    <string name="color_white">Trắng</string>
+    <string name="color_black">Đen</string>
+    <string name="color_red">Đỏ</string>
+    <string name="color_green">Xanh lá</string>
+    <string name="color_blue">Xanh dương</string>
+    <string name="color_yellow">Vàng</string>
+    <string name="color_cyan">Xanh lơ</string>
+    <string name="color_magenta">Đỏ tía</string>
+    <string name="enter_text">Nhập văn bản…</string>
+    <string name="text_decoration_bold">Đậm</string>
+    <string name="text_decoration_italic">Nghiêng</string>
+    <string name="text_decoration_underlined">Gạch chân</string>
+    <string name="text_decoration_strikethrough">Gạch ngang</string>
+    <string name="text_alignment_left">Trái</string>
+    <string name="text_alignment_center">Giữa</string>
+    <string name="text_alignment_right">Phải</string>
+    <string name="text_color_white">Trắng</string>
+    <string name="text_color_black">Đen</string>
+    <string name="text_color_red">Đỏ</string>
+    <string name="text_color_green">Xanh lá</string>
+    <string name="text_color_blue">Xanh dương</string>
+    <string name="text_color_yellow">Vàng</string>
+    <string name="text_color_cyan">Xanh lơ</string>
+    <string name="text_color_magenta">Đỏ tía</string>
+</resources>

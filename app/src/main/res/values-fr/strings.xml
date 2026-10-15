@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="save_as">Enregistrer sous...</string>
+    <string name="share">Partager</string>
+    <string name="edit_mode_text">Texte</string>
+    <string name="filter_grey">Gris</string>
+    <string name="filter_sepia">Sépia</string>
+    <string name="color_white">Blanc</string>
+    <string name="color_black">Noir</string>
+    <string name="color_red">Rouge</string>
+    <string name="color_green">Vert</string>
+    <string name="color_blue">Bleu</string>
+    <string name="color_yellow">Jaune</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_magenta">Magenta</string>
+    <string name="text_color_white">Blanc</string>
+    <string name="text_color_black">Noir</string>
+    <string name="text_color_red">Rouge</string>
+    <string name="text_color_green">Vert</string>
+    <string name="text_color_blue">Bleu</string>
+    <string name="text_color_yellow">Jaune</string>
+    <string name="text_color_cyan">Cyan</string>
+    <string name="text_color_magenta">Magenta</string>
+</resources>

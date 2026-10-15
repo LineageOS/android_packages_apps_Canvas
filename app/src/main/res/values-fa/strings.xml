@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="close">بستن</string>
+    <string name="back">بازگشت</string>
+    <string name="cancel_action">لغو اقدام</string>
+    <string name="confirm_action">تأیید اقدام</string>
+    <string name="undo">بازگرد</string>
+    <string name="redo">از نو</string>
+    <string name="save">ذخیره</string>
+    <string name="save_as">ذخیره به‌عنوان…</string>
+    <string name="share">هم‌رسانی</string>
+    <string name="more">بیشتر…</string>
+    <string name="category_transformation">تغییر شکل تصویر</string>
+    <string name="category_drawing">ابزارهای ترسیم</string>
+    <string name="category_adjustments">تنظیمات تصویر</string>
+    <string name="edit_mode_crop">برش</string>
+    <string name="edit_mode_rotation">چرخش</string>
+    <string name="edit_mode_marker">نشانگر</string>
+    <string name="edit_mode_highlighter">هایلایتر</string>
+    <string name="edit_mode_text">متن</string>
+    <string name="edit_mode_brightness">روشنایی</string>
+    <string name="edit_mode_contrast">کنتراست</string>
+    <string name="edit_mode_filters">فیلترها</string>
+    <string name="rotate_counterclockwise">جرخش پادساعتگرد</string>
+    <string name="rotate_clockwise">چرخش ساعتگرد</string>
+    <string name="filter_none">اصلی</string>
+    <string name="filter_grey">خاکستری</string>
+    <string name="filter_sepia">قهوه ای</string>
+    <string name="filter_select_hint">برای پیش‌نمایش یک فیلتر انتخاب کنید</string>
+    <string name="filter_tap_again_to_adjust">برای تنظیم مجدد، روی فیلتر انتخاب‌شده ضربه بزنید</string>
+    <string name="color_white">سفید</string>
+    <string name="color_black">سیاه</string>
+    <string name="color_red">قرمز</string>
+    <string name="color_green">سبز</string>
+    <string name="color_blue">آبی</string>
+    <string name="color_yellow">زرد</string>
+    <string name="color_cyan">فیروزه‌ای</string>
+    <string name="color_magenta">ارغوانی</string>
+    <string name="enter_text">متن را وارد کنید...</string>
+    <string name="text_decoration_bold">برجسته</string>
+    <string name="text_decoration_italic">مورب</string>
+    <string name="text_decoration_underlined">خط‌کشیده‌شده</string>
+    <string name="text_decoration_strikethrough">خط‌خورده</string>
+    <string name="text_alignment_left">چپ</string>
+    <string name="text_alignment_center">مرکز</string>
+    <string name="text_alignment_right">راست</string>
+    <string name="text_color_white">سفید</string>
+    <string name="text_color_black">سیاه</string>
+    <string name="text_color_red">قرمز</string>
+    <string name="text_color_green">سبز</string>
+    <string name="text_color_blue">آبی</string>
+    <string name="text_color_yellow">زرد</string>
+    <string name="text_color_cyan">فیروزه‌ای</string>
+    <string name="text_color_magenta">ارغوانی</string>
+</resources>

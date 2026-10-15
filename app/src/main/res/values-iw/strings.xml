@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="close">סגירה</string>
+    <string name="back">חזרה</string>
+    <string name="cancel_action">ביטול פעולה</string>
+    <string name="confirm_action">אישור פעולה</string>
+    <string name="undo">ביטול</string>
+    <string name="redo">ביצוע מחדש</string>
+    <string name="save">שמירה</string>
+    <string name="save_as">שמירה בשם...</string>
+    <string name="share">שיתוף</string>
+    <string name="more">עוד…</string>
+    <string name="category_transformation">שינוי צורת תמונה</string>
+    <string name="category_drawing">כלי ציור</string>
+    <string name="category_adjustments">כוונון תמונה</string>
+    <string name="edit_mode_crop">חיתוך</string>
+    <string name="edit_mode_rotation">סיבוב</string>
+    <string name="edit_mode_marker">טוש</string>
+    <string name="edit_mode_highlighter">מדגש</string>
+    <string name="edit_mode_text">טקסט</string>
+    <string name="edit_mode_brightness">בהירות</string>
+    <string name="edit_mode_contrast">ניגודיות</string>
+    <string name="edit_mode_filters">פילטרים</string>
+    <string name="rotate_counterclockwise">סיבוב נגד כיוון השעון</string>
+    <string name="rotate_clockwise">סיבוב לכיוון השעון</string>
+    <string name="filter_none">מקורי</string>
+    <string name="filter_grey">אפור</string>
+    <string name="filter_sepia">ספיה</string>
+    <string name="filter_select_hint">נא לבחור פילטר לתצוגה המקדימה</string>
+    <string name="filter_tap_again_to_adjust">אפשר להקיש שוב על הפילטר שנבחר כדי לכוונן אותו</string>
+    <string name="color_white">לבן</string>
+    <string name="color_black">שחור</string>
+    <string name="color_red">אדום</string>
+    <string name="color_green">ירוק</string>
+    <string name="color_blue">כחול</string>
+    <string name="color_yellow">צהוב</string>
+    <string name="color_cyan">ציאן</string>
+    <string name="color_magenta">מג\'נטה</string>
+    <string name="enter_text">הזנת טקסט…</string>
+    <string name="text_decoration_bold">מודגש</string>
+    <string name="text_decoration_italic">נטוי</string>
+    <string name="text_decoration_underlined">קו תחתון</string>
+    <string name="text_decoration_strikethrough">קו חוצה</string>
+    <string name="text_alignment_left">שמאל</string>
+    <string name="text_alignment_center">מרכז</string>
+    <string name="text_alignment_right">ימין</string>
+    <string name="text_color_white">לבן</string>
+    <string name="text_color_black">שחור</string>
+    <string name="text_color_red">אדום</string>
+    <string name="text_color_green">ירוק</string>
+    <string name="text_color_blue">כחול</string>
+    <string name="text_color_yellow">צהוב</string>
+    <string name="text_color_cyan">ציאן</string>
+    <string name="text_color_magenta">מג\'נטה</string>
+</resources>

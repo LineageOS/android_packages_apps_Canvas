@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="close">داخستن</string>
+    <string name="back">گەڕانەوە</string>
+    <string name="cancel_action">هەڵوەشاندنەوەی کردار</string>
+    <string name="confirm_action">پەسەندکردنی کردار</string>
+    <string name="undo">پاشگەزبوونەوە</string>
+    <string name="redo">دووبارەکردنەوە</string>
+    <string name="save">پاشەکەوتکردن</string>
+    <string name="save_as">پاشەکەوتکردن وەک…</string>
+    <string name="share">هاوبەشکردن</string>
+    <string name="more">زیاتر…</string>
+    <string name="category_transformation">گۆڕینی شێوەی وێنە</string>
+    <string name="category_drawing">ئامرازەکانی وێنەکێشان</string>
+    <string name="category_adjustments">ڕێکخستنەکانی وێنە</string>
+    <string name="edit_mode_crop">بڕین</string>
+    <string name="edit_mode_rotation">خولانەوە</string>
+    <string name="edit_mode_marker">ماڕکەر</string>
+    <string name="edit_mode_highlighter">تۆخکەر (Highlighter)</string>
+    <string name="edit_mode_text">دەق</string>
+    <string name="edit_mode_brightness">ڕووناکی</string>
+    <string name="edit_mode_contrast">کۆنتراست</string>
+    <string name="edit_mode_filters">فلتەرەکان</string>
+    <string name="rotate_counterclockwise">خولانەوە بە پێچەوانەی کاتژمێر</string>
+    <string name="rotate_clockwise">خولانەوە بە ئاراستەی کاتژمێر</string>
+    <string name="filter_none">بنەڕەتی</string>
+    <string name="filter_grey">خۆڵەمێشی</string>
+    <string name="filter_sepia">سێپیا (Sepia)</string>
+    <string name="filter_select_hint">فلتەرێک هەڵبژێرە بۆ پێشبینیکردن</string>
+    <string name="filter_tap_again_to_adjust">دووبارە دەست لە فلتەرە هەڵبژێردراوەکە بدە بۆ دەستکاریکردن</string>
+    <string name="color_white">سپی</string>
+    <string name="color_black">ڕەش</string>
+    <string name="color_red">سوور</string>
+    <string name="color_green">سەوز</string>
+    <string name="color_blue">شین</string>
+    <string name="color_yellow">زەرد</string>
+    <string name="color_cyan">شینی کاڵ (Cyan)</string>
+    <string name="color_magenta">مۆری مەجینتا</string>
+    <string name="enter_text">دەق بنووسە…</string>
+    <string name="text_decoration_bold">تۆخ</string>
+    <string name="text_decoration_italic">لار</string>
+    <string name="text_decoration_underlined">هێڵ بەژێرداهاتوو</string>
+    <string name="text_decoration_strikethrough">هێڵ بەسەرداهاتوو</string>
+    <string name="text_alignment_left">چەپ</string>
+    <string name="text_alignment_center">ناوەڕاست</string>
+    <string name="text_alignment_right">ڕاست</string>
+    <string name="text_color_white">سپی</string>
+    <string name="text_color_black">ڕەش</string>
+    <string name="text_color_red">سوور</string>
+    <string name="text_color_green">سەوز</string>
+    <string name="text_color_blue">شین</string>
+    <string name="text_color_yellow">زەرد</string>
+    <string name="text_color_cyan">شینی کاڵ (Cyan)</string>
+    <string name="text_color_magenta">مۆری مەجینتا</string>
+</resources>
