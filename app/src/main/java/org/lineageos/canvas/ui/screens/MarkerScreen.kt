@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -195,10 +196,17 @@ private fun StrokeScreen(
                     }
                 }
 
-                completedPreviewStrokes.forEach { (points, strokeColor) ->
-                    drawStroke(points, strokeColor)
+                clipRect(
+                    imageInformation?.imageViewRect?.left ?: 0f,
+                    imageInformation?.imageViewRect?.top ?: 0f,
+                    imageInformation?.imageViewRect?.right ?: 0f,
+                    imageInformation?.imageViewRect?.bottom ?: 0f,
+                ) {
+                    completedPreviewStrokes.forEach { (points, strokeColor) ->
+                        drawStroke(points, strokeColor)
+                    }
+                    drawStroke(previewPoints, activeStrokeColor)
                 }
-                drawStroke(previewPoints, activeStrokeColor)
             }
         }
 
