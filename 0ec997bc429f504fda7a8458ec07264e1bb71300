@@ -18,6 +18,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "81b6c649_56439acd",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 15346
+      },
+      "writtenOn": "2026-10-28T16:11:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aef32938_e4a52fda",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1cdd082f_9a7f6839",
@@ -35,6 +53,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87b9528d_5411a065",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 15346
+      },
+      "writtenOn": "2026-10-28T16:11:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1cdd082f_9a7f6839",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09a4a420_32b185c9",
@@ -48,6 +84,24 @@
       "writtenOn": "2026-10-28T15:34:50Z",
       "side": 1,
       "message": "Could be a `Size` extension",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c62a0d12_26d76aa4",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 15346
+      },
+      "writtenOn": "2026-10-28T16:11:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09a4a420_32b185c9",
       "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
@@ -86,6 +140,24 @@
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "251e013a_36f26b0a",
+        "filename": "app/src/main/java/org/lineageos/canvas/ui/screens/CropScreen.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 15346
+      },
+      "writtenOn": "2026-10-28T16:11:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dad8740c_26421c23",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11aa1fd3_47a08704",
@@ -99,6 +171,24 @@
       "writtenOn": "2026-10-28T15:34:50Z",
       "side": 1,
       "message": "```\nwhen (action.degrees) {\n    0f -\u003e ...\n    else -\u003e ...\n}\n```",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a899bdc2_1aa9ead2",
+        "filename": "app/src/main/java/org/lineageos/canvas/viewmodels/EditViewModel.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 15346
+      },
+      "writtenOn": "2026-10-28T16:11:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11aa1fd3_47a08704",
       "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     }
