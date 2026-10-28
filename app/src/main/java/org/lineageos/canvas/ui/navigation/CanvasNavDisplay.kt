@@ -9,6 +9,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -43,6 +48,29 @@ fun CanvasNavDisplay(
     onCategorySelected: (EditMode.Category?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var confirmedBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
+    var isAwaitingResult by remember { mutableStateOf(false) }
+    val editBitmap = confirmedBitmap ?: bitmapWithOverlayActions
+
+    LaunchedEffect(isAwaitingResult, finalResultBitmap) {
+        if (isAwaitingResult && finalResultBitmap !== confirmedBitmap) {
+            isAwaitingResult = false
+            if (navigationBackStack.lastOrNull() is Screen.Edit) {
+                navigationBackStack.removeLastOrNull()
+            }
+        }
+    }
+
+    val onConfirm: (Action?) -> Unit = { action ->
+        if (action == null) {
+            navigationBackStack.removeLastOrNull()
+        } else if (!isAwaitingResult) {
+            confirmedBitmap = bitmapWithOverlayActions
+            isAwaitingResult = true
+            onAddAction(action)
+        }
+    }
+
     val entryProvider = entryProvider {
         entry<Screen.Home> {
             HomeScreen(
@@ -55,6 +83,7 @@ fun CanvasNavDisplay(
                 currentCategory = currentCategory,
                 onCategorySelected = onCategorySelected,
                 onEditModeSelected = { editMode ->
+                    confirmedBitmap = null
                     navigationBackStack.add(Screen.Edit(editMode))
                 },
             )
@@ -63,22 +92,16 @@ fun CanvasNavDisplay(
         entry<Screen.Edit> {
             when (it.editMode) {
                 EditMode.CROP -> CropScreen(
-                    imageBitmap = bitmapWithOverlayActions,
+                    imageBitmap = editBitmap,
                     initialCropRect = cropRect,
-                    onConfirm = { action ->
-                        action?.let(onAddAction)
-                        navigationBackStack.removeLastOrNull()
-                    },
+                    onConfirm = onConfirm,
                     onCancel = navigationBackStack::removeLastOrNull,
                 )
 
                 EditMode.ROTATION -> RotationScreen(
-                    imageBitmap = bitmapWithOverlayActions,
+                    imageBitmap = editBitmap,
                     cropRect = cropRect,
-                    onConfirm = { action ->
-                        action?.let(onAddAction)
-                        navigationBackStack.removeLastOrNull()
-                    },
+                    onConfirm = onConfirm,
                     onCancel = navigationBackStack::removeLastOrNull,
                 )
 
@@ -102,32 +125,23 @@ fun CanvasNavDisplay(
                 )
 
                 EditMode.BRIGHTNESS -> BrightnessScreen(
-                    imageBitmap = bitmapWithOverlayActions,
+                    imageBitmap = editBitmap,
                     cropRect = cropRect,
-                    onConfirm = { action ->
-                        action?.let(onAddAction)
-                        navigationBackStack.removeLastOrNull()
-                    },
+                    onConfirm = onConfirm,
                     onCancel = navigationBackStack::removeLastOrNull,
                 )
 
                 EditMode.CONTRAST -> ContrastScreen(
-                    imageBitmap = bitmapWithOverlayActions,
+                    imageBitmap = editBitmap,
                     cropRect = cropRect,
-                    onConfirm = { action ->
-                        action?.let(onAddAction)
-                        navigationBackStack.removeLastOrNull()
-                    },
+                    onConfirm = onConfirm,
                     onCancel = navigationBackStack::removeLastOrNull,
                 )
 
                 EditMode.FILTERS -> FiltersScreen(
-                    imageBitmap = bitmapWithOverlayActions,
+                    imageBitmap = editBitmap,
                     cropRect = cropRect,
-                    onConfirm = { action ->
-                        action?.let(onAddAction)
-                        navigationBackStack.removeLastOrNull()
-                    },
+                    onConfirm = onConfirm,
                     onCancel = navigationBackStack::removeLastOrNull,
                 )
             }
