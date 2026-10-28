@@ -54,6 +54,10 @@
     <string name="mirror_horizontally">Mirror horizontally</string>
     <string name="mirror_vertically">Mirror vertically</string>
 
+    <!-- Crop -->
+    <string name="straighten">Straighten</string>
+    <string name="straighten_degrees" translatable="false">%1$d°</string>
+
     <!-- Adjustments -->
     <string name="adjustment_percent" translatable="false">%1$.0f%%</string>
 
