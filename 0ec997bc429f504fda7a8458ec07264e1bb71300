@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5d0973d4_175a5be5",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 15346
+      },
+      "writtenOn": "2026-10-28T16:13:19Z",
+      "side": 1,
+      "message": "not done ack, misclicked",
+      "parentUuid": "c62a0d12_26d76aa4",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "462d05c2_0e0927a9",
         "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
         "patchSetId": 2
@@ -119,6 +137,24 @@
       "writtenOn": "2026-10-28T15:34:50Z",
       "side": 1,
       "message": "idk, I don\u0027t think those should be extension functions, should we have a utils class?",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37ee3d66_fae402a3",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 15346
+      },
+      "writtenOn": "2026-10-28T16:13:19Z",
+      "side": 1,
+      "message": "Its awkward both ways",
+      "parentUuid": "462d05c2_0e0927a9",
       "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
       "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
     },
