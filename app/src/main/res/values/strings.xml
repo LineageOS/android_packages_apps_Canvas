@@ -38,6 +38,10 @@
     <string name="rotate_counterclockwise">Rotate counterclockwise</string>
     <string name="rotate_clockwise">Rotate clockwise</string>
 
+    <!-- Crop -->
+    <string name="straighten">Straighten</string>
+    <string name="straighten_degrees" translatable="false">%1$d°</string>
+
     <!-- Adjustments -->
     <string name="adjustment_percent" translatable="false">%1$.0f%%</string>
 

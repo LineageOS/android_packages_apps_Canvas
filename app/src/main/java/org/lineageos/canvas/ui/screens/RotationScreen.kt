@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
@@ -74,23 +73,22 @@ fun RotationScreen(
                 CanvasImage(
                     imageBitmap = imageBitmap,
                     cropRect = cropRect,
-                    modifier = Modifier
-                        .size(fittedWidth, fittedHeight)
-                        .graphicsLayer {
-                            val radians = degrees * PI.toFloat() / 180f
-                            val cosine = abs(cos(radians))
-                            val sine = abs(sin(radians))
-                            val boundsWidth = size.width * cosine + size.height * sine
-                            val boundsHeight = size.width * sine + size.height * cosine
-                            val scale = min(
-                                constraints.maxWidth / boundsWidth,
-                                constraints.maxHeight / boundsHeight,
-                            ).coerceAtMost(1f)
+                    modifier = Modifier.size(fittedWidth, fittedHeight),
+                    transform = {
+                        val radians = degrees * PI.toFloat() / 180f
+                        val cosine = abs(cos(radians))
+                        val sine = abs(sin(radians))
+                        val boundsWidth = size.width * cosine + size.height * sine
+                        val boundsHeight = size.width * sine + size.height * cosine
+                        val scale = min(
+                            constraints.maxWidth / boundsWidth,
+                            constraints.maxHeight / boundsHeight,
+                        ).coerceAtMost(1f)
 
-                            rotationZ = degrees
-                            scaleX = scale
-                            scaleY = scale
-                        },
+                        rotationZ = degrees
+                        scaleX = scale
+                        scaleY = scale
+                    },
                 )
             }
         }
