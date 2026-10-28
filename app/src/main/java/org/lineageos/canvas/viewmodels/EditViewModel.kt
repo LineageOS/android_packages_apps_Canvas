@@ -14,8 +14,10 @@ import android.net.Uri
 import android.view.View
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.center
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Canvas
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ImageBitmapConfig
 import androidx.compose.ui.graphics.Path
@@ -26,14 +28,17 @@ import androidx.compose.ui.graphics.colorspace.ColorSpace
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.toOffset
 import androidx.compose.ui.unit.toIntRect
+import androidx.compose.ui.unit.toRect
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.application
 import androidx.lifecycle.viewModelScope
@@ -52,6 +57,7 @@ import org.lineageos.canvas.ext.adjustBrightness
 import org.lineageos.canvas.ext.adjustContrast
 import org.lineageos.canvas.ext.applyGrey
 import org.lineageos.canvas.ext.applySepia
+import org.lineageos.canvas.ext.constrainCrop
 import org.lineageos.canvas.ext.size
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.models.HistoryList
@@ -266,7 +272,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         is Action.Adjustment.Contrast -> adjustContrast(action.value)
         is Action.Adjustment.Grey -> applyGrey(action.saturation)
         is Action.Adjustment.Sepia -> applySepia(action.amount)
-        is Action.Transformation.Crop -> crop(action.rect)
+        is Action.Transformation.Crop -> when (action.degrees) {
+            0f -> crop(action.rect)
+            else -> straightenAndCrop(action.rect, action.degrees)
+        }
         is Action.Transformation.Rotation -> rotateBy(action.rotation)
         is Action.Drawing -> createEmptyBitmap(hasAlpha = true).draw {
             drawImage(this@applyAction)
@@ -431,7 +440,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Create a cropped bitmap. The rectangle is clipped to this bitmap's bounds.
      */
-    private fun ImageBitmap.crop(rect: androidx.compose.ui.unit.IntRect): ImageBitmap {
+    private fun ImageBitmap.crop(rect: IntRect): ImageBitmap {
         val left = rect.left.coerceIn(0, width - 1)
         val top = rect.top.coerceIn(0, height - 1)
         val right = rect.right.coerceIn(left + 1, width)
@@ -447,6 +456,38 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                 srcOffset = androidx.compose.ui.unit.IntOffset(left, top),
                 srcSize = androidx.compose.ui.unit.IntSize(right - left, bottom - top),
             )
+        }
+    }
+
+    /**
+     * Rotate this bitmap clockwise by [degrees] about its center and crop it to [rect], given in
+     * the coordinates of the rotated bitmap. The rectangle is first constrained to lie inside the
+     * rotated bitmap so the result has no empty corners.
+     */
+    private fun ImageBitmap.straightenAndCrop(
+        rect: IntRect,
+        degrees: Float,
+    ): ImageBitmap {
+        val imageSize = Size(width.toFloat(), height.toFloat())
+        val cropRect = rect.toRect().constrainCrop(imageSize, degrees)
+        val outputWidth = cropRect.width.toInt().coerceAtLeast(1)
+        val outputHeight = cropRect.height.toInt().coerceAtLeast(1)
+        val source = this
+
+        return createEmptyBitmap(
+            width = outputWidth,
+            height = outputHeight,
+        ).draw {
+            withTransform({
+                translate(-cropRect.left, -cropRect.top)
+                rotate(degrees, pivot = imageSize.center)
+            }) {
+                drawImage(
+                    image = source,
+                    dstSize = source.size,
+                    filterQuality = FilterQuality.High,
+                )
+            }
         }
     }
 }

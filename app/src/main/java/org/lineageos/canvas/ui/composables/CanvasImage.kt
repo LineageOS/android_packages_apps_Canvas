@@ -18,6 +18,8 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.GraphicsLayerScope
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.ScaleFactor
@@ -167,6 +169,8 @@ data class ImageInformation(
  * @param imageBitmap The image data to display
  * @param cropRect The crop rectangle applied to the given data
  * @param modifier The [Modifier] to apply
+ * @param transform Graphics layer transformation applied to the image. Unlike one in [modifier], it
+ *   is drawn during shared element transitions and doesn't affect the image's reported position
  * @param onImageInformation Called when the image information is ready
  */
 @Composable
@@ -175,6 +179,7 @@ fun CanvasImage(
     cropRect: IntRect?,
     modifier: Modifier = Modifier,
     colorFilter: ColorFilter? = null,
+    transform: (GraphicsLayerScope.() -> Unit)? = null,
     onImageInformation: (ImageInformation) -> Unit = {},
 ) {
     var positionInParent by remember { mutableStateOf<Offset?>(null) }
@@ -235,7 +240,8 @@ fun CanvasImage(
                 .onGloballyPositioned {
                     positionInParent = it.positionInParent()
                     containerSize = it.size
-                },
+                }
+                .then(transform?.let { Modifier.graphicsLayer(it) } ?: Modifier),
             contentScale = ContentScale.Fit,
         )
     }

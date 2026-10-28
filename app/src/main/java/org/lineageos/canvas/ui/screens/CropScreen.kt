@@ -9,20 +9,25 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
@@ -30,14 +35,22 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toRect
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import kotlin.math.min
+import org.lineageos.canvas.ext.constrainCrop
 import org.lineageos.canvas.ext.drawCropOverlay
+import org.lineageos.canvas.ext.moveCrop
+import org.lineageos.canvas.ext.resizeCrop
+import org.lineageos.canvas.ext.resizedBy
+import org.lineageos.canvas.ext.roundInwards
+import org.lineageos.canvas.ext.straightenCropBounds
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.models.Handle
 import org.lineageos.canvas.ui.LocalSharedTransitionScope
 import org.lineageos.canvas.ui.composables.CanvasBottomBar
 import org.lineageos.canvas.ui.composables.CanvasImage
-import org.lineageos.canvas.ui.composables.ImageInformation
+import org.lineageos.canvas.ui.composables.StraightenDial
 import org.lineageos.canvas.ui.theme.CropOverlayStyle
 import org.lineageos.canvas.ui.theme.defaultCropOverlayStyle
 
@@ -48,45 +61,110 @@ fun CropScreen(
     onConfirm: (Action?) -> Unit,
     onCancel: () -> Unit,
 ) {
-    var imageInformation by remember { mutableStateOf<ImageInformation?>(null) }
     val imageBounds = IntRect(0, 0, imageBitmap.width, imageBitmap.height)
+    val imageSize = Size(imageBitmap.width.toFloat(), imageBitmap.height.toFloat())
+    var degrees by remember(imageBitmap) { mutableFloatStateOf(0f) }
     var cropRect by remember(imageBitmap) {
-        mutableStateOf(initialCropRect ?: imageBounds)
+        mutableStateOf((initialCropRect ?: imageBounds).toRect())
     }
+    var draggedCropRect by remember(imageBitmap) { mutableStateOf(cropRect) }
+    var isAutoCrop by remember(imageBitmap) {
+        mutableStateOf(initialCropRect == null || initialCropRect == imageBounds)
+    }
+    var dragStartCropRect by remember { mutableStateOf<Rect?>(null) }
+    var imageViewRect by remember(imageBitmap) { mutableStateOf<Rect?>(null) }
+    val minimumCropSizePx = with(LocalDensity.current) { 100.dp.toPx() }
+    val paddingPx = with(LocalDensity.current) { 16.dp.toPx() }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        Box(
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .clipToBounds(),
+            contentAlignment = Alignment.Center,
         ) {
-            CanvasImage(
-                imageBitmap = imageBitmap,
-                cropRect = null,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-            ) { imageInformation = it }
+            val availableWidth = constraints.maxWidth - 2 * paddingPx
+            val availableHeight = constraints.maxHeight - 2 * paddingPx
 
-            imageInformation?.let { imageInformation ->
-                CropOverlay(
-                    imageBounds = imageInformation.imageViewRect,
-                    cropRect = imageInformation.originalBitmapRectToViewRect(cropRect),
-                    onCropRectChange = { rect ->
-                        cropRect = imageInformation.viewRectToOriginalBitmap(rect)
-                    },
-                    modifier = Modifier.fillMaxSize(),
+            if (imageBitmap.width > 0 && imageBitmap.height > 0 &&
+                availableWidth > 0 && availableHeight > 0
+            ) {
+                val scale = min(
+                    availableWidth / imageSize.width,
+                    availableHeight / imageSize.height,
                 )
+
+                CanvasImage(
+                    imageBitmap = imageBitmap,
+                    cropRect = null,
+                    modifier = Modifier.size(
+                        width = with(LocalDensity.current) { (imageSize.width * scale).toDp() },
+                        height = with(LocalDensity.current) { (imageSize.height * scale).toDp() },
+                    ),
+                    transform = { rotationZ = degrees },
+                ) { imageViewRect = it.imageViewRect }
+
+                imageViewRect?.let { imageViewRect ->
+                    val viewScale = imageViewRect.width / imageSize.width
+
+                    fun imageToView(rect: Rect) = Rect(
+                        topLeft = imageViewRect.topLeft + rect.topLeft * viewScale,
+                        bottomRight = imageViewRect.topLeft + rect.bottomRight * viewScale,
+                    )
+
+                    CropOverlay(
+                        cropRect = imageToView(cropRect),
+                        onDragStart = { dragStartCropRect = cropRect },
+                        onDrag = { handle, totalDrag ->
+                            val startCropRect = dragStartCropRect ?: return@CropOverlay
+                            val imageDrag = totalDrag / viewScale
+
+                            isAutoCrop = false
+                            cropRect = if (handle == Handle.CENTER) {
+                                cropRect.moveCrop(
+                                    offset = startCropRect.topLeft + imageDrag - cropRect.topLeft,
+                                    imageSize = imageSize,
+                                    degrees = degrees,
+                                )
+                            } else {
+                                cropRect.resizeCrop(
+                                    new = startCropRect.resizedBy(
+                                        handle,
+                                        imageDrag,
+                                        minimumCropSizePx / viewScale,
+                                    ),
+                                    imageSize = imageSize,
+                                    degrees = degrees,
+                                )
+                            }
+                            draggedCropRect = cropRect
+                        },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
 
+        StraightenDial(
+            value = degrees,
+            onValueChange = { newDegrees ->
+                cropRect = if (isAutoCrop) {
+                    straightenCropBounds(imageSize, newDegrees)
+                } else {
+                    draggedCropRect.constrainCrop(imageSize, newDegrees)
+                }
+                degrees = newDegrees
+            },
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
+
         CanvasBottomBar(
             onConfirm = {
-                if (imageInformation != null) {
-                    onConfirm(cropRect.takeIf { it != imageBounds }?.let {
-                        Action.Transformation.Crop(it)
-                    })
-                }
+                val rect = cropRect.roundInwards()
+                onConfirm(Action.Transformation.Crop(rect, degrees).takeIf {
+                    degrees != 0f || rect != imageBounds
+                })
             },
             onCancel = onCancel,
         )
@@ -95,19 +173,21 @@ fun CropScreen(
 
 @Composable
 private fun CropOverlay(
-    imageBounds: Rect,
     cropRect: Rect,
-    onCropRectChange: (Rect) -> Unit,
+    onDragStart: () -> Unit,
+    onDrag: (handle: Handle, totalDrag: Offset) -> Unit,
     modifier: Modifier = Modifier,
     style: CropOverlayStyle = defaultCropOverlayStyle(),
 ) {
     var activeHandle by remember { mutableStateOf<Handle?>(null) }
+    var totalDrag by remember { mutableStateOf(Offset.Zero) }
     val currentCropRect by rememberUpdatedState(cropRect)
+    val currentOnDragStart by rememberUpdatedState(onDragStart)
+    val currentOnDrag by rememberUpdatedState(onDrag)
 
     val handleHitRadiusPx = with(LocalDensity.current) {
         maxOf(style.handleRadius + 8.dp, 40.dp).toPx()
     }
-    val minimumCropSizePx = with(LocalDensity.current) { 100.dp.toPx() }
 
     val transitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalNavAnimatedContentScope.current
@@ -121,7 +201,7 @@ private fun CropOverlay(
     Canvas(
         modifier = animatedOverlayModifier
             .graphicsLayer(compositingStrategy = CompositingStrategy.Offscreen)
-            .pointerInput(imageBounds) {
+            .pointerInput(handleHitRadiusPx) {
                 detectDragGestures(
                     onDragStart = { offset ->
                         activeHandle = getHandleForOffset(
@@ -129,6 +209,8 @@ private fun CropOverlay(
                             rect = currentCropRect,
                             hitRadius = handleHitRadiusPx,
                         )
+                        totalDrag = Offset.Zero
+                        currentOnDragStart()
                     },
                     onDragEnd = {
                         activeHandle = null
@@ -139,24 +221,8 @@ private fun CropOverlay(
                     onDrag = { change, dragAmount ->
                         change.consume()
 
-                        val activeHandle = activeHandle ?: return@detectDragGestures
-
-                        if ((change.position.y > imageBounds.bottom && dragAmount.y < 0f)
-                            || (change.position.y < imageBounds.top && dragAmount.y > 0f)
-                            || (change.position.x > imageBounds.right && dragAmount.x < 0f)
-                            || (change.position.x < imageBounds.left && dragAmount.x > 0f)
-                        ) {
-                            return@detectDragGestures
-                        }
-
-                        val newRect = updateRectWithDrag(
-                            currentCropRect,
-                            activeHandle,
-                            dragAmount,
-                            imageBounds,
-                            minimumCropSizePx,
-                        )
-                        onCropRectChange(newRect)
+                        totalDrag += dragAmount
+                        activeHandle?.let { currentOnDrag(it, totalDrag) }
                     },
                 )
             },
@@ -167,68 +233,6 @@ private fun CropOverlay(
             style = style,
         )
     }
-}
-
-private fun updateRectWithDrag(
-    rect: Rect,
-    handle: Handle,
-    drag: Offset,
-    bounds: Rect,
-    requestedMinimumSize: Float,
-): Rect {
-    val minWidth = minOf(requestedMinimumSize, bounds.width)
-    val minHeight = minOf(requestedMinimumSize, bounds.height)
-
-    if (handle == Handle.CENTER) {
-        val width = rect.width.coerceIn(0f, bounds.width)
-        val height = rect.height.coerceIn(0f, bounds.height)
-        val maxLeft = maxOf(bounds.left, minOf(bounds.right, bounds.right - width))
-        val maxTop = maxOf(bounds.top, minOf(bounds.bottom, bounds.bottom - height))
-        val left = (rect.left + drag.x).coerceIn(bounds.left, maxLeft)
-        val top = (rect.top + drag.y).coerceIn(bounds.top, maxTop)
-
-        return Rect(
-            left = left,
-            top = top,
-            right = minOf(bounds.right, left + width),
-            bottom = minOf(bounds.bottom, top + height),
-        )
-    }
-
-    val left = if (handle.movesLeft) {
-        (rect.left + drag.x).coerceIn(
-            bounds.left,
-            maxOf(bounds.left, minOf(bounds.right, rect.right - minWidth)),
-        )
-    } else {
-        rect.left
-    }
-    val right = if (handle.movesRight) {
-        (rect.right + drag.x).coerceIn(
-            minOf(bounds.right, maxOf(bounds.left, rect.left + minWidth)),
-            bounds.right,
-        )
-    } else {
-        rect.right
-    }
-    val top = if (handle.movesTop) {
-        (rect.top + drag.y).coerceIn(
-            bounds.top,
-            maxOf(bounds.top, minOf(bounds.bottom, rect.bottom - minHeight)),
-        )
-    } else {
-        rect.top
-    }
-    val bottom = if (handle.movesBottom) {
-        (rect.bottom + drag.y).coerceIn(
-            minOf(bounds.bottom, maxOf(bounds.top, rect.top + minHeight)),
-            bounds.bottom,
-        )
-    } else {
-        rect.bottom
-    }
-
-    return Rect(left, top, right, bottom)
 }
 
 private fun getHandleForOffset(offset: Offset, rect: Rect, hitRadius: Float): Handle? {
