@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aef32938_e4a52fda",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2026-10-28T15:34:50Z",
+      "side": 1,
+      "message": "Should be in Rect.kt",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cdd082f_9a7f6839",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2026-10-28T15:34:50Z",
+      "side": 1,
+      "message": "Ditto",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09a4a420_32b185c9",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2026-10-28T15:34:50Z",
+      "side": 1,
+      "message": "Could be a `Size` extension",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "462d05c2_0e0927a9",
+        "filename": "app/src/main/java/org/lineageos/canvas/ext/RotatedCrop.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2026-10-28T15:34:50Z",
+      "side": 1,
+      "message": "idk, I don\u0027t think those should be extension functions, should we have a utils class?",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dad8740c_26421c23",
+        "filename": "app/src/main/java/org/lineageos/canvas/ui/screens/CropScreen.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2026-10-28T15:34:50Z",
+      "side": 1,
+      "message": "To `Rect.kt`?",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11aa1fd3_47a08704",
+        "filename": "app/src/main/java/org/lineageos/canvas/viewmodels/EditViewModel.kt",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 25732
+      },
+      "writtenOn": "2026-10-28T15:34:50Z",
+      "side": 1,
+      "message": "```\nwhen (action.degrees) {\n    0f -\u003e ...\n    else -\u003e ...\n}\n```",
+      "revId": "0ec997bc429f504fda7a8458ec07264e1bb71300",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
