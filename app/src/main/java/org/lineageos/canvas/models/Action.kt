@@ -53,9 +53,13 @@ sealed interface Action {
      */
     sealed interface Transformation : Action {
         /**
-         * Crop the current image to a rectangle in its current coordinates.
+         * Straighten and crop the current image.
+         *
+         * @param rect The crop rectangle, in the coordinates of the current image after it has
+         *   been rotated by [degrees] about its center
+         * @param degrees The clockwise straighten angle, 0 for a plain crop
          */
-        data class Crop(val rect: IntRect) : Transformation
+        data class Crop(val rect: IntRect, val degrees: Float = 0f) : Transformation
 
         /**
          * Rotate the current image.
