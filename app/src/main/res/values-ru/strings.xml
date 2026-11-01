@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="close">Закрыть</string>
+    <string name="back">Назад</string>
+    <string name="cancel_action">Отменить действие</string>
+    <string name="confirm_action">Подтвердить действие</string>
+    <string name="undo">Отменить</string>
+    <string name="redo">Повторить</string>
+    <string name="save">Сохранить</string>
+    <string name="save_as">Сохранить как…</string>
+    <string name="share">Поделиться</string>
+    <string name="more">Еще…</string>
+    <string name="category_transformation">Преобразовать изображение</string>
+    <string name="category_drawing">Инструменты рисования</string>
+    <string name="category_adjustments">Корректировка изображения</string>
+    <string name="edit_mode_crop">Обрезать</string>
+    <string name="edit_mode_rotation">Повернуть</string>
+    <string name="edit_mode_marker">Метка</string>
+    <string name="edit_mode_highlighter">Выделение</string>
+    <string name="edit_mode_text">Текст</string>
+    <string name="edit_mode_brightness">Яркость</string>
+    <string name="edit_mode_contrast">Контраст</string>
+    <string name="edit_mode_filters">Фильтры</string>
+    <string name="rotate_counterclockwise">Повернуть против часовой стрелки</string>
+    <string name="rotate_clockwise">Повернуть по часовой стрелке</string>
+    <string name="filter_none">Оригинал</string>
+    <string name="filter_grey">Серый</string>
+    <string name="filter_sepia">Сепия</string>
+    <string name="filter_select_hint">Выберите фильтр для просмотра</string>
+    <string name="filter_tap_again_to_adjust">Нажмите на выбранный фильтр еще раз для настройки</string>
+    <string name="color_white">Белый</string>
+    <string name="color_black">Черный</string>
+    <string name="color_red">Красный</string>
+    <string name="color_green">Зеленый</string>
+    <string name="color_blue">Синий</string>
+    <string name="color_yellow">Желтый</string>
+    <string name="color_cyan">Голубой</string>
+    <string name="color_magenta">Пурпурный</string>
+    <string name="enter_text">Введите текст…</string>
+    <string name="text_decoration_bold">Жирный</string>
+    <string name="text_decoration_italic">Курсив</string>
+    <string name="text_decoration_underlined">Подчеркнутый</string>
+    <string name="text_decoration_strikethrough">Зачеркнутый</string>
+    <string name="text_alignment_left">Слева</string>
+    <string name="text_alignment_center">По центру</string>
+    <string name="text_alignment_right">Справа</string>
+    <string name="text_color_white">Белый</string>
+    <string name="text_color_black">Черный</string>
+    <string name="text_color_red">Красный</string>
+    <string name="text_color_green">Зеленый</string>
+    <string name="text_color_blue">Синий</string>
+    <string name="text_color_yellow">Желтый</string>
+    <string name="text_color_cyan">Голубой</string>
+    <string name="text_color_magenta">Пурпурный</string>
+</resources>

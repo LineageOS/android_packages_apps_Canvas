@@ -10,6 +10,7 @@
     <string name="save_as">Simpan sebagai…</string>
     <string name="share">Bagikan</string>
     <string name="more">Lainnya...</string>
+    <string name="category_adjustments">Penyesuaian gambar</string>
     <string name="edit_mode_crop">Potong</string>
     <string name="edit_mode_rotation">Rotasi</string>
     <string name="edit_mode_text">Teks</string>
@@ -17,6 +18,7 @@
     <string name="edit_mode_contrast">Kontras</string>
     <string name="edit_mode_filters">Filter</string>
     <string name="filter_grey">Abu-abu</string>
+    <string name="filter_sepia">Sepia</string>
     <string name="color_white">Putih</string>
     <string name="color_black">Hitam</string>
     <string name="color_red">Merah</string>
