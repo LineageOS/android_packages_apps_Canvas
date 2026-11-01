@@ -244,7 +244,7 @@ private fun CategoryToolbar(
  * Undo/redo button.
  */
 @Composable
-private fun ActionButton(
+internal fun ActionButton(
     canDo: Boolean,
     onDo: () -> Unit,
     imageVector: ImageVector,
