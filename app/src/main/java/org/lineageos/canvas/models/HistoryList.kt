@@ -111,6 +111,15 @@ class HistoryList<E>(collection: Collection<E>) {
         canRedo
     }
 
+    fun goTo(index: Int) = transaction {
+        require(index in -1..allElements.lastIndex) { "Invalid history index: $index" }
+
+        val changed = currentIndex.value != index
+        currentIndex.value = index
+
+        changed
+    }
+
     /**
      * Remove all elements from the history.
      */

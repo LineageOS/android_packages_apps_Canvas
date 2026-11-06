@@ -5,6 +5,18 @@
 
 package org.lineageos.canvas.models
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrightnessMedium
+import androidx.compose.material.icons.filled.Contrast
+import androidx.compose.material.icons.filled.Crop
+import androidx.compose.material.icons.filled.CropRotate
+import androidx.compose.material.icons.filled.Filter
+import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import org.lineageos.canvas.R
+
 /**
  * UI edit mode.
  */
@@ -48,6 +60,31 @@ enum class EditMode(val category: Category) {
      * Image filters.
      */
     FILTERS(Category.ADJUSTMENTS);
+
+    val titleResId: Int
+        get() = when (this) {
+            CROP -> R.string.edit_mode_crop
+            ROTATION -> R.string.edit_mode_rotation
+            MARKER -> R.string.edit_mode_marker
+            HIGHLIGHTER -> R.string.edit_mode_highlighter
+            TEXT -> R.string.edit_mode_text
+            BRIGHTNESS -> R.string.edit_mode_brightness
+            CONTRAST -> R.string.edit_mode_contrast
+            FILTERS -> R.string.edit_mode_filters
+        }
+
+    val icon: ImageVector
+        @Composable
+        get() = when (this) {
+            CROP -> Icons.Filled.Crop
+            ROTATION -> Icons.Filled.CropRotate
+            MARKER -> ImageVector.vectorResource(R.drawable.ic_ink_pen)
+            HIGHLIGHTER -> ImageVector.vectorResource(R.drawable.ic_ink_highlighter)
+            TEXT -> Icons.Filled.TextFields
+            BRIGHTNESS -> Icons.Filled.BrightnessMedium
+            CONTRAST -> Icons.Filled.Contrast
+            FILTERS -> Icons.Filled.Filter
+        }
 
     companion object {
         private val groupedByCategory = entries.groupBy(EditMode::category)
