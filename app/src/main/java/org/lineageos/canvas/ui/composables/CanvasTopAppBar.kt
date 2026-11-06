@@ -23,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SplitButtonDefaults
 import androidx.compose.material3.SplitButtonLayout
 import androidx.compose.material3.Text
@@ -198,11 +199,11 @@ fun CanvasTopAppBar(
                 else -> {}
             }
         },
-        colors = TopAppBarDefaults.topAppBarColors().copy(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent,
-            navigationIconContentColor = Color.White,
-            titleContentColor = Color.White,
-            actionIconContentColor = Color.White,
+            navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
+            titleContentColor = MaterialTheme.colorScheme.onBackground,
+            actionIconContentColor = MaterialTheme.colorScheme.onBackground,
         ),
     )
 }
