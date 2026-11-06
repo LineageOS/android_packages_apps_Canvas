@@ -145,9 +145,14 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     /**
+     * The current snapshot of the history list.
+     */
+    val currentSnapshot = historyList.snapshot
+
+    /**
      * The currently active actions applied to the image.
      */
-    private val actions = historyList.snapshot
+    private val actions = currentSnapshot
         .mapLatest { it.currentElements }
         .flowOn(Dispatchers.IO)
         .stateIn(
@@ -156,10 +161,11 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
             initialValue = emptyList(),
         )
 
+
     /**
      * Whether there is an action that can be undone.
      */
-    val canUndo = historyList.snapshot
+    val canUndo = currentSnapshot
         .mapLatest { it.canUndo }
         .flowOn(Dispatchers.IO)
         .stateIn(
@@ -171,7 +177,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * Whether there is an action that can be redone.
      */
-    val canRedo = historyList.snapshot
+    val canRedo = currentSnapshot
         .mapLatest { it.canRedo }
         .stateIn(
             scope = viewModelScope,
@@ -260,6 +266,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
 
     fun redo() {
         historyList.redo()
+    }
+
+    fun goToHistory(index: Int) {
+        historyList.goTo(index)
     }
 
     private fun ImageBitmap.applyAction(action: Action): ImageBitmap = when (action) {
