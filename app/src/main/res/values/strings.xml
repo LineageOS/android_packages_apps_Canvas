@@ -19,6 +19,11 @@
     <string name="share">Share</string>
     <string name="more">More…</string>
 
+    <!-- Comparison -->
+    <string name="compare_original">Original</string>
+    <string name="compare_show_original">Show original</string>
+    <string name="compare_show_edited">Show edited</string>
+
     <!-- Edit categories -->
     <string name="category_transformation">Transform image</string>
     <string name="category_drawing">Drawing tools</string>
