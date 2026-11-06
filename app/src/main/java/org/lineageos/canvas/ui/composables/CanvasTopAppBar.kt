@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Share
@@ -42,7 +43,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import org.lineageos.canvas.R
-import org.lineageos.canvas.models.EditMode
 import org.lineageos.canvas.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
@@ -55,6 +55,8 @@ fun CanvasTopAppBar(
     onSave: () -> Unit,
     onSaveAs: () -> Unit,
     onShare: () -> Unit,
+    hasHistory: Boolean,
+    onShowHistory: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TopAppBar(
@@ -62,16 +64,7 @@ fun CanvasTopAppBar(
             when (currentScreen) {
                 is Screen.Home -> null
 
-                is Screen.Edit -> when (currentScreen.editMode) {
-                    EditMode.CROP -> R.string.edit_mode_crop
-                    EditMode.ROTATION -> R.string.edit_mode_rotation
-                    EditMode.MARKER -> R.string.edit_mode_marker
-                    EditMode.HIGHLIGHTER -> R.string.edit_mode_highlighter
-                    EditMode.TEXT -> R.string.edit_mode_text
-                    EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
-                    EditMode.CONTRAST -> R.string.edit_mode_contrast
-                    EditMode.FILTERS -> R.string.edit_mode_filters
-                }
+                is Screen.Edit -> currentScreen.editMode.titleResId
             }?.let {
                 Text(text = stringResource(it))
             }
@@ -93,6 +86,19 @@ fun CanvasTopAppBar(
         actions = {
             when (currentScreen) {
                 is Screen.Home -> {
+                    val historyDescription = stringResource(R.string.history)
+                    ToolbarTooltip(historyDescription, TooltipAnchorPosition.Below) {
+                        IconButton(
+                            onClick = onShowHistory,
+                            enabled = hasHistory,
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.History,
+                                contentDescription = historyDescription,
+                            )
+                        }
+                    }
+
                     Box {
                         var checked by remember { mutableStateOf(false) }
 

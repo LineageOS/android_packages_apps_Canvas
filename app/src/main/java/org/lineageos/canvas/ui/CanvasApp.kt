@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import org.lineageos.canvas.models.EditMode
 import org.lineageos.canvas.ui.composables.CanvasTopAppBar
+import org.lineageos.canvas.ui.composables.HistorySheet
 import org.lineageos.canvas.ui.navigation.CanvasNavDisplay
 import org.lineageos.canvas.ui.navigation.Screen
 import org.lineageos.canvas.viewmodels.EditViewModel
@@ -40,6 +41,9 @@ fun CanvasApp(
 
     val canUndo by editViewModel.canUndo.collectAsState()
     val canRedo by editViewModel.canRedo.collectAsState()
+
+    val history by editViewModel.history.collectAsState()
+    var showHistory by remember { mutableStateOf(false) }
 
     val cropRect by editViewModel.cropRect.collectAsState()
 
@@ -63,6 +67,8 @@ fun CanvasApp(
                         onSave = onSave,
                         onSaveAs = onSaveAs,
                         onShare = onShare,
+                        hasHistory = history.allElements.isNotEmpty(),
+                        onShowHistory = { showHistory = true },
                     )
                 },
             ) { innerPadding ->
@@ -82,6 +88,14 @@ fun CanvasApp(
                         .fillMaxSize()
                         .padding(innerPadding)
                         .consumeWindowInsets(innerPadding),
+                )
+            }
+
+            if (showHistory) {
+                HistorySheet(
+                    history = history,
+                    onGoTo = editViewModel::goToHistory,
+                    onDismissRequest = { showHistory = false },
                 )
             }
         }

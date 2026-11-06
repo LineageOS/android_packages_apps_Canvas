@@ -156,6 +156,11 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         )
 
     /**
+     * The whole history, including the reverted actions that can be redone.
+     */
+    val history = historyList.snapshot
+
+    /**
      * Whether there is an action that can be undone.
      */
     val canUndo = historyList.snapshot
@@ -259,6 +264,15 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
 
     fun redo() {
         historyList.redo()
+    }
+
+    /**
+     * Restore the image as it was after the action at [index] in the history.
+     *
+     * @param index The index of the last action to keep active, -1 for the original image
+     */
+    fun goToHistory(index: Int) {
+        historyList.goTo(index)
     }
 
     private fun ImageBitmap.applyAction(action: Action): ImageBitmap = when (action) {

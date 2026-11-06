@@ -112,6 +112,21 @@ class HistoryList<E>(collection: Collection<E>) {
     }
 
     /**
+     * Move to a specific position in the history, keeping every element so that later ones can
+     * still be redone.
+     *
+     * @param index The index of the last active element, -1 meaning no active element
+     */
+    fun goTo(index: Int) = transaction {
+        require(index in -1..allElements.lastIndex) { "Invalid history index: $index" }
+
+        val changed = currentIndex.value != index
+        currentIndex.value = index
+
+        changed
+    }
+
+    /**
      * Remove all elements from the history.
      */
     fun clear() = transaction {
