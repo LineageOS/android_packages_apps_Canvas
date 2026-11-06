@@ -23,16 +23,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
-import androidx.compose.material.icons.filled.BrightnessMedium
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Contrast
-import androidx.compose.material.icons.filled.Crop
-import androidx.compose.material.icons.filled.CropRotate
 import androidx.compose.material.icons.filled.Draw
 import androidx.compose.material.icons.filled.Exposure
-import androidx.compose.material.icons.filled.Filter
-import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.Transform
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
@@ -45,7 +39,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import org.lineageos.canvas.R
 import org.lineageos.canvas.models.EditMode
@@ -308,34 +301,14 @@ fun EditModeButton(
     onEditModeSelected: (EditMode) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val description = stringResource(
-        when (editMode) {
-            EditMode.CROP -> R.string.edit_mode_crop
-            EditMode.ROTATION -> R.string.edit_mode_rotation
-            EditMode.MARKER -> R.string.edit_mode_marker
-            EditMode.HIGHLIGHTER -> R.string.edit_mode_highlighter
-            EditMode.TEXT -> R.string.edit_mode_text
-            EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
-            EditMode.CONTRAST -> R.string.edit_mode_contrast
-            EditMode.FILTERS -> R.string.edit_mode_filters
-        }
-    )
+    val description = stringResource(editMode.titleResId)
     ToolbarTooltip(description) {
         IconButton(
             onClick = { onEditModeSelected(editMode) },
             modifier = modifier,
         ) {
             Icon(
-                imageVector = when (editMode) {
-                    EditMode.CROP -> Icons.Filled.Crop
-                    EditMode.ROTATION -> Icons.Filled.CropRotate
-                    EditMode.MARKER -> ImageVector.vectorResource(R.drawable.ic_ink_pen)
-                    EditMode.HIGHLIGHTER -> ImageVector.vectorResource(R.drawable.ic_ink_highlighter)
-                    EditMode.TEXT -> Icons.Filled.TextFields
-                    EditMode.BRIGHTNESS -> Icons.Filled.BrightnessMedium
-                    EditMode.CONTRAST -> Icons.Filled.Contrast
-                    EditMode.FILTERS -> Icons.Filled.Filter
-                },
+                imageVector = editMode.icon,
                 contentDescription = description,
             )
         }

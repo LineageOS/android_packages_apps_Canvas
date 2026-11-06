@@ -155,6 +155,8 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
             initialValue = emptyList(),
         )
 
+    val history = historyList.snapshot
+
     /**
      * Whether there is an action that can be undone.
      */
@@ -259,6 +261,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
 
     fun redo() {
         historyList.redo()
+    }
+
+    fun goToHistory(index: Int) {
+        historyList.goTo(index)
     }
 
     private fun ImageBitmap.applyAction(action: Action): ImageBitmap = when (action) {
