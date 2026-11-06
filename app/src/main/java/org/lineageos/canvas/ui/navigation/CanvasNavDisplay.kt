@@ -33,6 +33,7 @@ fun CanvasNavDisplay(
     navigationBackStack: SnapshotStateList<Screen>,
     bitmapWithOverlayActions: ImageBitmap,
     finalResultBitmap: ImageBitmap,
+    originalBitmap: ImageBitmap,
     cropRect: IntRect,
     onAddAction: (Action) -> Unit,
     canUndo: Boolean,
@@ -47,6 +48,7 @@ fun CanvasNavDisplay(
         entry<Screen.Home> {
             HomeScreen(
                 imageBitmap = finalResultBitmap,
+                originalBitmap = originalBitmap,
                 cropRect = cropRect,
                 canUndo = canUndo,
                 canRedo = canRedo,
