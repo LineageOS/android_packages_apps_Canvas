@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Exposure
 import androidx.compose.material.icons.filled.Filter
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.Transform
+import androidx.compose.material.icons.outlined.Interests
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalFloatingToolbar
@@ -315,6 +316,7 @@ fun EditModeButton(
             EditMode.MARKER -> R.string.edit_mode_marker
             EditMode.HIGHLIGHTER -> R.string.edit_mode_highlighter
             EditMode.TEXT -> R.string.edit_mode_text
+            EditMode.SHAPES -> R.string.edit_mode_shapes
             EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
             EditMode.CONTRAST -> R.string.edit_mode_contrast
             EditMode.FILTERS -> R.string.edit_mode_filters
@@ -332,6 +334,7 @@ fun EditModeButton(
                     EditMode.MARKER -> ImageVector.vectorResource(R.drawable.ic_ink_pen)
                     EditMode.HIGHLIGHTER -> ImageVector.vectorResource(R.drawable.ic_ink_highlighter)
                     EditMode.TEXT -> Icons.Filled.TextFields
+                    EditMode.SHAPES -> Icons.Outlined.Interests
                     EditMode.BRIGHTNESS -> Icons.Filled.BrightnessMedium
                     EditMode.CONTRAST -> Icons.Filled.Contrast
                     EditMode.FILTERS -> Icons.Filled.Filter

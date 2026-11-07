@@ -52,6 +52,7 @@ import org.lineageos.canvas.ext.adjustBrightness
 import org.lineageos.canvas.ext.adjustContrast
 import org.lineageos.canvas.ext.applyGrey
 import org.lineageos.canvas.ext.applySepia
+import org.lineageos.canvas.ext.drawShape
 import org.lineageos.canvas.ext.size
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.models.HistoryList
@@ -340,6 +341,15 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                     color = action.marker.color,
                     strokeWidth = action.marker.strokeWidth,
                     blendMode = BlendMode.Clear,
+                )
+
+                is Action.Drawing.Shape -> drawShape(
+                    type = action.type,
+                    start = action.start.toOffset(),
+                    end = action.end.toOffset(),
+                    color = action.color,
+                    filled = action.filled,
+                    strokeWidth = action.strokeWidth,
                 )
             }
         }

@@ -68,6 +68,7 @@ fun CanvasTopAppBar(
                     EditMode.MARKER -> R.string.edit_mode_marker
                     EditMode.HIGHLIGHTER -> R.string.edit_mode_highlighter
                     EditMode.TEXT -> R.string.edit_mode_text
+                    EditMode.SHAPES -> R.string.edit_mode_shapes
                     EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
                     EditMode.CONTRAST -> R.string.edit_mode_contrast
                     EditMode.FILTERS -> R.string.edit_mode_filters
