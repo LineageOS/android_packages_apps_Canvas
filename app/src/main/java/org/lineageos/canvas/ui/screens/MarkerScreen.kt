@@ -7,6 +7,9 @@ package org.lineageos.canvas.ui.screens
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,10 +19,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +38,7 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import org.lineageos.canvas.R
@@ -41,9 +48,12 @@ import org.lineageos.canvas.ui.composables.CanvasBottomBar
 import org.lineageos.canvas.ui.composables.CanvasImage
 import org.lineageos.canvas.ui.composables.ImageInformation
 import org.lineageos.canvas.ui.composables.StrokeColorPalette
+import org.lineageos.canvas.ui.composables.StrokeWidthControls
 
-private const val MARKER_STROKE_WIDTH = 24f
-private const val HIGHLIGHTER_STROKE_WIDTH = 32f
+private val MARKER_STROKE_WIDTH = 4.dp
+private val HIGHLIGHTER_STROKE_WIDTH = 16.dp
+
+private val STROKE_WIDTH_RANGE = 1f..48f
 
 /**
  * Add marker strokes to the current image.
@@ -56,12 +66,12 @@ fun MarkerScreen(
 ) = StrokeScreen(
     imageBitmap = imageBitmap,
     initialColor = Color.Red,
-    strokeWidth = MARKER_STROKE_WIDTH,
-    createAction = { points, color ->
+    defaultStrokeWidth = MARKER_STROKE_WIDTH,
+    createAction = { points, color, strokeWidth ->
         Action.Drawing.Marker(
             points = points,
             color = color,
-            strokeWidth = MARKER_STROKE_WIDTH,
+            strokeWidth = strokeWidth,
         )
     },
     onAddAction = onAddAction,
@@ -80,12 +90,12 @@ fun HighlighterScreen(
     imageBitmap = imageBitmap,
     initialColor = Color.Yellow,
     colorTransform = { it.copy(alpha = 0.4f) },
-    strokeWidth = HIGHLIGHTER_STROKE_WIDTH,
-    createAction = { points, color ->
+    defaultStrokeWidth = HIGHLIGHTER_STROKE_WIDTH,
+    createAction = { points, color, strokeWidth ->
         Action.Drawing.Highlighter(
             points = points,
             color = color,
-            strokeWidth = HIGHLIGHTER_STROKE_WIDTH,
+            strokeWidth = strokeWidth,
         )
     },
     onAddAction = onAddAction,
@@ -97,8 +107,8 @@ private fun StrokeScreen(
     imageBitmap: ImageBitmap,
     initialColor: Color,
     colorTransform: (Color) -> Color = { it },
-    strokeWidth: Float,
-    createAction: (List<IntOffset>, Color) -> Action,
+    defaultStrokeWidth: Dp,
+    createAction: (points: List<IntOffset>, color: Color, strokeWidth: Float) -> Action,
     onAddAction: (Action) -> Unit,
     onCancel: () -> Unit,
 ) {
@@ -108,8 +118,16 @@ private fun StrokeScreen(
     var imagePoints by remember { mutableStateOf(emptyList<IntOffset>()) }
     var color by remember { mutableStateOf(initialColor) }
     var activeStrokeColor by remember { mutableStateOf(initialColor) }
+    var activeStrokeWidth by remember { mutableFloatStateOf(0f) }
+    var strokeWidth by rememberSaveable { mutableFloatStateOf(defaultStrokeWidth.value) }
+    val strokeWidthInteractionSource = remember { MutableInteractionSource() }
+    val isStrokeWidthPressed by strokeWidthInteractionSource.collectIsPressedAsState()
+    val isStrokeWidthDragged by strokeWidthInteractionSource.collectIsDraggedAsState()
+    val isAdjustingStrokeWidth = isStrokeWidthPressed || isStrokeWidthDragged
     var strokes by remember { mutableStateOf(emptyList<PendingStroke>()) }
     var undoneStrokes by remember { mutableStateOf(emptyList<PendingStroke>()) }
+
+    val previewOutlineColor = MaterialTheme.colorScheme.outline
 
     Column(modifier = Modifier.fillMaxSize()) {
         Box(
@@ -137,17 +155,24 @@ private fun StrokeScreen(
                                     previewPoints = listOf(offset)
                                     imagePoints = listOf(info!!.viewOffsetToOriginalBitmap(offset))
                                     activeStrokeColor = colorTransform(color)
+                                    activeStrokeWidth = strokeWidth.dp.toPx()
                                 }
                             },
                             onDragEnd = {
                                 if (isDrawing && imagePoints.isNotEmpty()) {
+                                    val info = imageInformation
+                                    val viewToImageScale = info?.let {
+                                        it.bitmapSize.width / it.imageViewRect.width
+                                    } ?: 1f
                                     strokes += PendingStroke(
                                         action = createAction(
                                             imagePoints.toList(),
                                             activeStrokeColor,
+                                            activeStrokeWidth * viewToImageScale,
                                         ),
                                         previewPoints = previewPoints,
                                         color = activeStrokeColor,
+                                        previewStrokeWidth = activeStrokeWidth,
                                     )
                                     undoneStrokes = emptyList()
                                 }
@@ -173,12 +198,11 @@ private fun StrokeScreen(
                         )
                     },
             ) {
-                val previewStrokeWidth = imageInformation?.let { info ->
-                    strokeWidth *
-                        info.imageViewRect.width / info.bitmapSize.width
-                } ?: 8.dp.toPx()
-
-                fun drawStroke(points: List<Offset>, strokeColor: Color) {
+                fun drawStroke(
+                    points: List<Offset>,
+                    strokeColor: Color,
+                    previewStrokeWidth: Float,
+                ) {
                     if (points.size == 1) {
                         drawCircle(
                             color = strokeColor,
@@ -211,12 +235,38 @@ private fun StrokeScreen(
                     imageInformation?.imageViewRect?.bottom ?: size.height,
                 ) {
                     strokes.forEach {
-                        drawStroke(it.previewPoints, it.color)
+                        drawStroke(it.previewPoints, it.color, it.previewStrokeWidth)
                     }
-                    drawStroke(previewPoints, activeStrokeColor)
+                    drawStroke(previewPoints, activeStrokeColor, activeStrokeWidth)
+                }
+
+                if (isAdjustingStrokeWidth) {
+                    val center = imageInformation?.imageViewRect?.center ?: this.center
+                    val radius = strokeWidth.dp.toPx() / 2f
+                    drawCircle(
+                        color = colorTransform(color),
+                        radius = radius,
+                        center = center,
+                    )
+                    drawCircle(
+                        color = previewOutlineColor,
+                        radius = radius,
+                        center = center,
+                        style = Stroke(width = 1.dp.toPx()),
+                    )
                 }
             }
         }
+
+        StrokeWidthControls(
+            value = strokeWidth,
+            onValueChange = { strokeWidth = it },
+            valueRange = STROKE_WIDTH_RANGE,
+            interactionSource = strokeWidthInteractionSource,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+        )
 
         StrokeColorPalette(
             selectedColor = color,
@@ -264,4 +314,5 @@ private data class PendingStroke(
     val action: Action,
     val previewPoints: List<Offset>,
     val color: Color,
+    val previewStrokeWidth: Float,
 )

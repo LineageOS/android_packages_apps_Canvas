@@ -48,6 +48,9 @@
     <string name="filter_select_hint">Select a filter to preview</string>
     <string name="filter_tap_again_to_adjust">Tap selected filter again to adjust</string>
 
+    <!-- Drawing -->
+    <string name="stroke_width">Stroke width</string>
+
     <!-- Drawing colors -->
     <string name="color_white">White</string>
     <string name="color_black">Black</string>
