@@ -75,8 +75,8 @@ fun CanvasNavDisplay(
                 EditMode.ROTATION -> RotationScreen(
                     imageBitmap = bitmapWithOverlayActions,
                     cropRect = cropRect,
-                    onConfirm = { action ->
-                        action?.let(onAddAction)
+                    onConfirm = { actions ->
+                        actions.forEach(onAddAction)
                         navigationBackStack.removeLastOrNull()
                     },
                     onCancel = navigationBackStack::removeLastOrNull,

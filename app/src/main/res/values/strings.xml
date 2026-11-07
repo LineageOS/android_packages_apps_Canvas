@@ -37,6 +37,8 @@
     <!-- Rotation -->
     <string name="rotate_counterclockwise">Rotate counterclockwise</string>
     <string name="rotate_clockwise">Rotate clockwise</string>
+    <string name="mirror_horizontally">Mirror horizontally</string>
+    <string name="mirror_vertically">Mirror vertically</string>
 
     <!-- Adjustments -->
     <string name="adjustment_percent" translatable="false">%1$.0f%%</string>

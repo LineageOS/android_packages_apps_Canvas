@@ -61,6 +61,11 @@ sealed interface Action {
          * Rotate the current image.
          */
         data class Rotation(val rotation: RotationStep) : Transformation
+
+        /**
+         * Mirrors the current image horizontally or vertically.
+         */
+        data class Mirror(val horizontal: Boolean, val vertical: Boolean) : Transformation
     }
 
     sealed interface Drawing : Action {
