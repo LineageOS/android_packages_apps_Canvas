@@ -47,6 +47,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import org.lineageos.canvas.ext.mirror
 import org.lineageos.canvas.ext.rotateBy
 import org.lineageos.canvas.ext.adjustBrightness
 import org.lineageos.canvas.ext.adjustContrast
@@ -268,6 +269,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         is Action.Adjustment.Sepia -> applySepia(action.amount)
         is Action.Transformation.Crop -> crop(action.rect)
         is Action.Transformation.Rotation -> rotateBy(action.rotation)
+        is Action.Transformation.Mirror -> mirror(action.horizontal, action.vertical)
         is Action.Drawing -> createEmptyBitmap(hasAlpha = true).draw {
             drawImage(this@applyAction)
             drawAction(action)
@@ -300,6 +302,10 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 is Action.Transformation.Rotation -> {
+                    // Handled by the action replay pipeline
+                }
+
+                is Action.Transformation.Mirror -> {
                     // Handled by the action replay pipeline
                 }
             }

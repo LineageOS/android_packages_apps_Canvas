@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
@@ -54,6 +55,35 @@ fun ImageBitmap.rotateBy(rotationStep: RotationStep): ImageBitmap {
                     y = (outputHeight - height) / 2f,
                 ),
             )
+        }
+    }
+
+    return result
+}
+
+fun ImageBitmap.mirror(horizontal: Boolean, vertical: Boolean): ImageBitmap {
+    if (!horizontal && !vertical) return this
+
+    val result = ImageBitmap(
+        width = width,
+        height = height,
+        config = config,
+        hasAlpha = hasAlpha,
+        colorSpace = colorSpace,
+    )
+
+    CanvasDrawScope().draw(
+        density = Density(1f),
+        layoutDirection = LayoutDirection.Ltr,
+        canvas = Canvas(result),
+        size = Size(width.toFloat(), height.toFloat()),
+    ) {
+        scale(
+            scaleX = if (horizontal) -1f else 1f,
+            scaleY = if (vertical) -1f else 1f,
+            pivot = Offset(width / 2f, height / 2f),
+        ) {
+            drawImage(this@mirror)
         }
     }
 

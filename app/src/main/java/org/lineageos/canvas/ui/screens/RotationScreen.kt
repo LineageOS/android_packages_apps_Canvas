@@ -15,17 +15,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.RotateLeft
 import androidx.compose.material.icons.automirrored.filled.RotateRight
+import androidx.compose.material.icons.filled.Flip
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalFloatingToolbar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -47,11 +51,15 @@ import kotlin.math.sin
 fun RotationScreen(
     imageBitmap: ImageBitmap,
     cropRect: IntRect?,
-    onConfirm: (Action?) -> Unit,
+    onConfirm: (List<Action>) -> Unit,
     onCancel: () -> Unit,
 ) {
     var quarterTurns by remember { mutableIntStateOf(0) }
     val degrees by animateFloatAsState(quarterTurns * 90f)
+    var mirrorHorizontally by remember { mutableStateOf(false) }
+    var mirrorVertically by remember { mutableStateOf(false) }
+    val mirrorScaleX by animateFloatAsState(if (mirrorHorizontally) -1f else 1f)
+    val mirrorScaleY by animateFloatAsState(if (mirrorVertically) -1f else 1f)
 
     Column(modifier = Modifier.fillMaxSize()) {
         BoxWithConstraints(
@@ -77,6 +85,10 @@ fun RotationScreen(
                     modifier = Modifier
                         .size(fittedWidth, fittedHeight)
                         .graphicsLayer {
+                            scaleX = mirrorScaleX
+                            scaleY = mirrorScaleY
+                        }
+                        .graphicsLayer {
                             val radians = degrees * PI.toFloat() / 180f
                             val cosine = abs(cos(radians))
                             val sine = abs(sin(radians))
@@ -101,14 +113,26 @@ fun RotationScreen(
                 val rotation = RotationStep.entries[
                     quarterTurns.mod(RotationStep.entries.size)
                 ]
-                onConfirm(rotation.takeIf { it != RotationStep.ROT_0 }?.let {
-                    Action.Transformation.Rotation(it)
-                })
+                onConfirm(
+                    listOfNotNull(
+                        rotation.takeIf { it != RotationStep.ROT_0 }?.let {
+                            Action.Transformation.Rotation(it)
+                        },
+                        Action.Transformation.Mirror(
+                            horizontal = mirrorHorizontally,
+                            vertical = mirrorVertically,
+                        ).takeIf { mirrorHorizontally || mirrorVertically },
+                    )
+                )
             },
         ) {
             RotationBottomBarContent(
                 onRotateCounterclockwise = { quarterTurns-- },
                 onRotateClockwise = { quarterTurns++ },
+                mirrorHorizontally = mirrorHorizontally,
+                onMirrorHorizontallyChange = { mirrorHorizontally = it },
+                mirrorVertically = mirrorVertically,
+                onMirrorVerticallyChange = { mirrorVertically = it },
             )
         }
     }
@@ -119,6 +143,10 @@ fun RotationScreen(
 private fun RotationBottomBarContent(
     onRotateCounterclockwise: () -> Unit,
     onRotateClockwise: () -> Unit,
+    mirrorHorizontally: Boolean,
+    onMirrorHorizontallyChange: (Boolean) -> Unit,
+    mirrorVertically: Boolean,
+    onMirrorVerticallyChange: (Boolean) -> Unit,
 ) {
     HorizontalFloatingToolbar(expanded = true) {
         val counterclockwiseDescription = stringResource(R.string.rotate_counterclockwise)
@@ -137,6 +165,33 @@ private fun RotationBottomBarContent(
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.RotateRight,
                     contentDescription = clockwiseDescription,
+                )
+            }
+        }
+
+        val mirrorHorizontallyDescription = stringResource(R.string.mirror_horizontally)
+        ToolbarTooltip(mirrorHorizontallyDescription) {
+            IconToggleButton(
+                checked = mirrorHorizontally,
+                onCheckedChange = onMirrorHorizontallyChange,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Flip,
+                    contentDescription = mirrorHorizontallyDescription,
+                )
+            }
+        }
+
+        val mirrorVerticallyDescription = stringResource(R.string.mirror_vertically)
+        ToolbarTooltip(mirrorVerticallyDescription) {
+            IconToggleButton(
+                checked = mirrorVertically,
+                onCheckedChange = onMirrorVerticallyChange,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Flip,
+                    contentDescription = mirrorVerticallyDescription,
+                    modifier = Modifier.rotate(90f),
                 )
             }
         }
