@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.core.util.Consumer
+import org.lineageos.canvas.models.CropRequest
 import org.lineageos.canvas.models.EditStatus
 import org.lineageos.canvas.models.ImageFormat
 import org.lineageos.canvas.ui.CanvasApp
@@ -32,7 +33,9 @@ class MainActivity : ComponentActivity() {
     private val resultOpsViewModel: ResultOpsViewModel by viewModels()
 
     private val onNewIntentListener = Consumer<Intent> { intent ->
-        val uri = intent.takeIf { it.action == Intent.ACTION_EDIT }?.data ?: run {
+        val uri = intent.takeIf {
+            it.action == Intent.ACTION_EDIT || it.action == CropRequest.ACTION_CROP
+        }?.data ?: run {
             finish()
             return@Consumer
         }
@@ -46,6 +49,9 @@ class MainActivity : ComponentActivity() {
 
         editViewModel.setUri(uri, isWritable)
         resultOpsViewModel.setUri(uri)
+        resultOpsViewModel.setCropRequest(
+            intent.takeIf { it.action == CropRequest.ACTION_CROP }?.let(CropRequest::fromIntent)
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +65,7 @@ class MainActivity : ComponentActivity() {
             val saveStatus by resultOpsViewModel.saveStatus.collectAsState()
             val image by resultOpsViewModel.image.collectAsState()
             val finalBitmap by editViewModel.finalResultBitmap.collectAsState()
+            val cropRequest by resultOpsViewModel.cropRequest.collectAsState()
 
             LaunchedEffect(saveStatus) {
                 when (val status = saveStatus) {
@@ -79,6 +86,20 @@ class MainActivity : ComponentActivity() {
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
                         startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
+                    }
+
+                    is EditStatus.Cropped -> {
+                        val resultIntent = Intent().apply {
+                            status.uri?.let {
+                                data = it
+                                if (it != cropRequest?.outputUri) {
+                                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                }
+                            }
+                            status.bitmap?.let { putExtra(CropRequest.EXTRA_DATA, it) }
+                        }
+                        setResult(RESULT_OK, resultIntent)
+                        finish()
                     }
 
                     else -> {}
@@ -127,6 +148,12 @@ class MainActivity : ComponentActivity() {
                     onShare = {
                         finalBitmap?.let {
                             resultOpsViewModel.shareImage(it)
+                        }
+                    },
+                    cropRequest = cropRequest,
+                    onCropConfirmed = { rect ->
+                        finalBitmap?.let {
+                            resultOpsViewModel.saveCrop(it, rect)
                         }
                     },
                 )

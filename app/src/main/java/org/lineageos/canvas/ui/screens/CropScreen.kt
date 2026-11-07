@@ -57,19 +57,24 @@ import kotlin.math.roundToInt
 fun CropScreen(
     imageBitmap: ImageBitmap,
     initialCropRect: IntRect?,
-    onConfirm: (Action?) -> Unit,
+    onConfirm: (Action.Transformation.Crop?) -> Unit,
     onCancel: () -> Unit,
+    lockedAspectRatio: Float? = null,
 ) {
     var imageInformation by remember { mutableStateOf<ImageInformation?>(null) }
     val imageBounds = IntRect(0, 0, imageBitmap.width, imageBitmap.height)
     var cropRect by remember(imageBitmap) {
-        mutableStateOf(initialCropRect ?: imageBounds)
+        mutableStateOf(
+            lockedAspectRatio?.let { imageBounds.fitAspectRatio(it, imageBounds) }
+                ?: initialCropRect
+                ?: imageBounds
+        )
     }
     var aspectRatio by remember { mutableStateOf(CropAspectRatio.FREE) }
     var isLandscape by remember(imageBitmap) {
         mutableStateOf(imageBitmap.width >= imageBitmap.height)
     }
-    val ratio = aspectRatio.ratio(isLandscape)
+    val ratio = lockedAspectRatio ?: aspectRatio.ratio(isLandscape)
 
     fun selectAspectRatio(newAspectRatio: CropAspectRatio, newIsLandscape: Boolean) {
         aspectRatio = newAspectRatio
@@ -106,14 +111,16 @@ fun CropScreen(
             }
         }
 
-        CropAspectRatioSelector(
-            selectedAspectRatio = aspectRatio,
-            isLandscape = isLandscape,
-            onAspectRatioSelected = { selectAspectRatio(it, isLandscape) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-        )
+        if (lockedAspectRatio == null) {
+            CropAspectRatioSelector(
+                selectedAspectRatio = aspectRatio,
+                isLandscape = isLandscape,
+                onAspectRatioSelected = { selectAspectRatio(it, isLandscape) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+            )
+        }
 
         CanvasBottomBar(
             onConfirm = {
@@ -125,19 +132,21 @@ fun CropScreen(
             },
             onCancel = onCancel,
         ) {
-            val description = stringResource(R.string.crop_swap_orientation)
-            ToolbarTooltip(description) {
-                IconButton(
-                    onClick = { selectAspectRatio(aspectRatio, !isLandscape) },
-                    enabled = aspectRatio.canSwapOrientation,
-                ) {
-                    Icon(
-                        imageVector = when (isLandscape) {
-                            true -> Icons.Filled.CropLandscape
-                            false -> Icons.Filled.CropPortrait
-                        },
-                        contentDescription = description,
-                    )
+            if (lockedAspectRatio == null) {
+                val description = stringResource(R.string.crop_swap_orientation)
+                ToolbarTooltip(description) {
+                    IconButton(
+                        onClick = { selectAspectRatio(aspectRatio, !isLandscape) },
+                        enabled = aspectRatio.canSwapOrientation,
+                    ) {
+                        Icon(
+                            imageVector = when (isLandscape) {
+                                true -> Icons.Filled.CropLandscape
+                                false -> Icons.Filled.CropPortrait
+                            },
+                            contentDescription = description,
+                        )
+                    }
                 }
             }
         }
