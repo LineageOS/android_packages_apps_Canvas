@@ -111,6 +111,15 @@ sealed interface Action {
         data class Eraser(
             val marker: Marker,
         ) : Drawing
+
+        data class Shape(
+            val type: ShapeType,
+            val start: IntOffset,
+            val end: IntOffset,
+            val color: Color,
+            val filled: Boolean,
+            val strokeWidth: Float,
+        ) : Drawing
     }
 }
 
