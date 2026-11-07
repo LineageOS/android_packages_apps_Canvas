@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.InvertColors
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.TextFields
 import androidx.compose.material.icons.filled.Thermostat
+import androidx.compose.material.icons.outlined.Interests
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -48,6 +49,8 @@ enum class EditMode(val category: Category) {
      * Add text overlay.
      */
     TEXT(Category.DRAWING),
+
+    SHAPES(Category.DRAWING),
 
     /**
      * Brightness adjustment.
@@ -86,6 +89,7 @@ enum class EditMode(val category: Category) {
             MARKER -> R.string.edit_mode_marker
             HIGHLIGHTER -> R.string.edit_mode_highlighter
             TEXT -> R.string.edit_mode_text
+            SHAPES -> R.string.edit_mode_shapes
             BRIGHTNESS -> R.string.edit_mode_brightness
             CONTRAST -> R.string.edit_mode_contrast
             SATURATION -> R.string.edit_mode_saturation
@@ -102,6 +106,7 @@ enum class EditMode(val category: Category) {
             MARKER -> ImageVector.vectorResource(R.drawable.ic_ink_pen)
             HIGHLIGHTER -> ImageVector.vectorResource(R.drawable.ic_ink_highlighter)
             TEXT -> Icons.Filled.TextFields
+            SHAPES -> Icons.Outlined.Interests
             BRIGHTNESS -> Icons.Filled.BrightnessMedium
             CONTRAST -> Icons.Filled.Contrast
             SATURATION -> Icons.Filled.InvertColors

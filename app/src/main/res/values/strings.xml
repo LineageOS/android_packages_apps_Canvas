@@ -41,6 +41,7 @@
     <string name="edit_mode_marker">Marker</string>
     <string name="edit_mode_highlighter">Highlighter</string>
     <string name="edit_mode_text">Text</string>
+    <string name="edit_mode_shapes">Shapes</string>
     <string name="edit_mode_brightness">Brightness</string>
     <string name="edit_mode_contrast">Contrast</string>
     <string name="edit_mode_saturation">Saturation</string>
@@ -74,6 +75,19 @@
     <string name="filter_negative">Negative</string>
     <string name="filter_select_hint">Select a filter to preview</string>
     <string name="filter_tap_again_to_adjust">Tap selected filter again to adjust</string>
+
+    <!-- Drawing -->
+    <string name="stroke_width">Stroke width</string>
+
+    <!-- Shapes -->
+    <string name="shape_rectangle">Rectangle</string>
+    <string name="shape_oval">Oval</string>
+    <string name="shape_triangle">Triangle</string>
+    <string name="shape_star">Star</string>
+    <string name="shape_line">Line</string>
+    <string name="shape_arrow">Arrow</string>
+    <string name="shape_filled">Fill shape</string>
+    <string name="shape_keep_square">Keep equal sides</string>
 
     <!-- Drawing colors -->
     <string name="color_white">White</string>
