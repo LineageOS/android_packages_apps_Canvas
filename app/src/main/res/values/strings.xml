@@ -34,6 +34,11 @@
     <string name="edit_mode_contrast">Contrast</string>
     <string name="edit_mode_filters">Filters</string>
 
+    <!-- Crop -->
+    <string name="crop_aspect_ratio_free">Free</string>
+    <string name="crop_aspect_ratio" translatable="false">%1$d:%2$d</string>
+    <string name="crop_swap_orientation">Swap orientation</string>
+
     <!-- Rotation -->
     <string name="rotate_counterclockwise">Rotate counterclockwise</string>
     <string name="rotate_clockwise">Rotate clockwise</string>
