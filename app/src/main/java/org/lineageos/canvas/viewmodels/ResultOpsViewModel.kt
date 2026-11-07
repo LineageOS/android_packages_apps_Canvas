@@ -8,9 +8,11 @@ package org.lineageos.canvas.viewmodels
 import android.app.Application
 import android.content.ContentResolver
 import android.net.Uri
+import android.util.Log
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.core.content.FileProvider
+import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +27,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.lineageos.canvas.ext.copyTo
 import org.lineageos.canvas.models.EditStatus
 import org.lineageos.canvas.models.ImageFormat
 import org.lineageos.canvas.models.Image
@@ -100,12 +103,24 @@ class ResultOpsViewModel(application: Application) : AndroidViewModel(applicatio
 
             _editStatus.value = withContext(Dispatchers.IO) {
                 runCatching {
+                    val sourceExif = readSourceExif()
+
                     val outputStream = contentResolver.openOutputStream(targetUri, "wt")
                         ?: throw IOException("Unable to open output stream")
 
                     outputStream.use {
                         if (!bitmap.asAndroidBitmap().compress(format.compressFormat, 100, it)) {
                             throw IOException("Image compression failed")
+                        }
+                    }
+
+                    sourceExif?.let {
+                        contentResolver.openFileDescriptor(targetUri, "rw")?.use { pfd ->
+                            it.copyToAndSave(
+                                ExifInterface(pfd.fileDescriptor),
+                                bitmap,
+                                includeLocation = true,
+                            )
                         }
                     }
                 }.fold(
@@ -129,6 +144,7 @@ class ResultOpsViewModel(application: Application) : AndroidViewModel(applicatio
             _editStatus.value = withContext(Dispatchers.IO) {
                 runCatching {
                     val image = image.filterNotNull().first()
+                    val sourceExif = readSourceExif()
 
                     val imagesDir = File(context.filesDir, "images")
                     if (!imagesDir.exists()) imagesDir.mkdirs()
@@ -142,6 +158,8 @@ class ResultOpsViewModel(application: Application) : AndroidViewModel(applicatio
                             throw IOException("Image compression failed")
                         }
                     }
+
+                    sourceExif?.copyToAndSave(ExifInterface(file), bitmap, includeLocation = false)
 
                     FileProvider.getUriForFile(
                         context,
@@ -158,5 +176,28 @@ class ResultOpsViewModel(application: Application) : AndroidViewModel(applicatio
                 )
             }
         }
+    }
+
+    private fun readSourceExif() = uri.value?.let { uri ->
+        runCatching {
+            contentResolver.openInputStream(uri)?.use { ExifInterface(it) }
+        }.getOrNull()
+    }
+
+    private fun ExifInterface.copyToAndSave(
+        target: ExifInterface,
+        bitmap: ImageBitmap,
+        includeLocation: Boolean,
+    ) {
+        runCatching {
+            copyTo(target, bitmap.width, bitmap.height, includeLocation)
+            target.saveAttributes()
+        }.onFailure {
+            Log.w(LOG_TAG, "Unable to save the image metadata", it)
+        }
+    }
+
+    companion object {
+        private const val LOG_TAG = "ResultOpsViewModel"
     }
 }
