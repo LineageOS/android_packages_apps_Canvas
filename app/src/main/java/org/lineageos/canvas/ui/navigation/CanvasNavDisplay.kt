@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.IntRect
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import org.lineageos.canvas.models.Action
+import org.lineageos.canvas.models.CropRequest
 import org.lineageos.canvas.models.EditMode
 import org.lineageos.canvas.ui.LocalSharedTransitionScope
 import org.lineageos.canvas.ui.screens.HomeScreen
@@ -41,6 +42,9 @@ fun CanvasNavDisplay(
     onRedo: () -> Unit,
     currentCategory: EditMode.Category?,
     onCategorySelected: (EditMode.Category?) -> Unit,
+    cropRequest: CropRequest?,
+    onCropConfirmed: (IntRect) -> Unit,
+    onClose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val entryProvider = entryProvider {
@@ -66,10 +70,22 @@ fun CanvasNavDisplay(
                     imageBitmap = bitmapWithOverlayActions,
                     initialCropRect = cropRect,
                     onConfirm = { action ->
-                        action?.let(onAddAction)
-                        navigationBackStack.removeLastOrNull()
+                        when (cropRequest) {
+                            null -> {
+                                action?.let(onAddAction)
+                                navigationBackStack.removeLastOrNull()
+                            }
+
+                            else -> onCropConfirmed(action?.rect ?: cropRect)
+                        }
                     },
-                    onCancel = navigationBackStack::removeLastOrNull,
+                    onCancel = {
+                        when (cropRequest) {
+                            null -> navigationBackStack.removeLastOrNull()
+                            else -> onClose()
+                        }
+                    },
+                    lockedAspectRatio = cropRequest?.aspectRatio,
                 )
 
                 EditMode.ROTATION -> RotationScreen(

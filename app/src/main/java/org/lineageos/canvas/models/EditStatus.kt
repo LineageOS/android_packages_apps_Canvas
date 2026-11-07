@@ -5,6 +5,7 @@
 
 package org.lineageos.canvas.models
 
+import android.graphics.Bitmap
 import android.net.Uri
 
 sealed class EditStatus {
@@ -18,5 +19,6 @@ sealed class EditStatus {
     // Operation completed
     object Saved : EditStatus()
     data class Shared(val uri: Uri, val mimeType: String) : EditStatus()
+    data class Cropped(val uri: Uri?, val bitmap: Bitmap?) : EditStatus()
     data class Error(val message: String) : EditStatus()
 }

@@ -21,6 +21,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntRect
+import org.lineageos.canvas.models.CropRequest
 import org.lineageos.canvas.models.EditMode
 import org.lineageos.canvas.ui.composables.CanvasTopAppBar
 import org.lineageos.canvas.ui.navigation.CanvasNavDisplay
@@ -35,6 +37,8 @@ fun CanvasApp(
     onSave: () -> Unit,
     onSaveAs: () -> Unit,
     onShare: () -> Unit,
+    cropRequest: CropRequest?,
+    onCropConfirmed: (IntRect) -> Unit,
 ) {
     val isWritable by editViewModel.isWritable.collectAsState()
 
@@ -48,7 +52,14 @@ fun CanvasApp(
 
     var currentCategory by remember { mutableStateOf<EditMode.Category?>(null) }
 
-    val navigationBackStack = remember { mutableStateListOf<Screen>(Screen.Home) }
+    val navigationBackStack = remember(cropRequest != null) {
+        mutableStateListOf<Screen>(
+            when (cropRequest) {
+                null -> Screen.Home
+                else -> Screen.Edit(EditMode.CROP)
+            }
+        )
+    }
 
     SharedTransitionScope { modifier ->
         CompositionLocalProvider(LocalSharedTransitionScope provides this) {
@@ -78,6 +89,9 @@ fun CanvasApp(
                     onRedo = editViewModel::redo,
                     currentCategory = currentCategory,
                     onCategorySelected = { currentCategory = it },
+                    cropRequest = cropRequest,
+                    onCropConfirmed = onCropConfirmed,
+                    onClose = onClose,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(innerPadding)
