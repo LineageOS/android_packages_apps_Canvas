@@ -25,6 +25,7 @@ import org.lineageos.canvas.ui.screens.ContrastScreen
 import org.lineageos.canvas.ui.screens.FiltersScreen
 import org.lineageos.canvas.ui.screens.HighlighterScreen
 import org.lineageos.canvas.ui.screens.MarkerScreen
+import org.lineageos.canvas.ui.screens.RedactScreen
 import org.lineageos.canvas.ui.screens.RotationScreen
 import org.lineageos.canvas.ui.screens.ShapesScreen
 import org.lineageos.canvas.ui.screens.TextScreen
@@ -103,6 +104,12 @@ fun CanvasNavDisplay(
                 )
 
                 EditMode.SHAPES -> ShapesScreen(
+                    imageBitmap = finalResultBitmap,
+                    onAddAction = onAddAction,
+                    onCancel = navigationBackStack::removeLastOrNull,
+                )
+
+                EditMode.REDACT -> RedactScreen(
                     imageBitmap = finalResultBitmap,
                     onAddAction = onAddAction,
                     onCancel = navigationBackStack::removeLastOrNull,

@@ -120,6 +120,11 @@ sealed interface Action {
             val filled: Boolean,
             val strokeWidth: Float,
         ) : Drawing
+
+        data class Redact(
+            val rect: IntRect,
+            val mode: RedactMode,
+        ) : Drawing
     }
 }
 

@@ -36,6 +36,8 @@ enum class EditMode(val category: Category) {
 
     SHAPES(Category.DRAWING),
 
+    REDACT(Category.DRAWING),
+
     /**
      * Brightness adjustment.
      */

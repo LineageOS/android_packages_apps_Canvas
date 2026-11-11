@@ -53,6 +53,7 @@ import org.lineageos.canvas.ext.adjustContrast
 import org.lineageos.canvas.ext.applyGrey
 import org.lineageos.canvas.ext.applySepia
 import org.lineageos.canvas.ext.drawShape
+import org.lineageos.canvas.ext.redact
 import org.lineageos.canvas.ext.size
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.models.HistoryList
@@ -269,6 +270,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         is Action.Adjustment.Sepia -> applySepia(action.amount)
         is Action.Transformation.Crop -> crop(action.rect)
         is Action.Transformation.Rotation -> rotateBy(action.rotation)
+        is Action.Drawing.Redact -> redact(action.rect, action.mode)
         is Action.Drawing -> createEmptyBitmap(hasAlpha = true).draw {
             drawImage(this@applyAction)
             drawAction(action)
@@ -342,6 +344,8 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                     strokeWidth = action.marker.strokeWidth,
                     blendMode = BlendMode.Clear,
                 )
+
+                is Action.Drawing.Redact -> {}
 
                 is Action.Drawing.Shape -> drawShape(
                     type = action.type,
