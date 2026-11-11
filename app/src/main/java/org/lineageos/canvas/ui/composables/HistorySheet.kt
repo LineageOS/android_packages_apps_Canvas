@@ -135,6 +135,7 @@ private val Action.editMode: EditMode?
         is Action.Drawing.Highlighter -> EditMode.HIGHLIGHTER
         is Action.Drawing.Text -> EditMode.TEXT
         is Action.Drawing.Shape -> EditMode.SHAPES
+        is Action.Drawing.Redact -> EditMode.REDACT
         is Action.Drawing.Eraser -> null
     }
 
@@ -185,5 +186,6 @@ private fun Action.detail(): String? = when (this) {
     is Action.Drawing.Marker,
     is Action.Drawing.Highlighter,
     is Action.Drawing.Shape,
+    is Action.Drawing.Redact,
     is Action.Drawing.Eraser -> null
 }

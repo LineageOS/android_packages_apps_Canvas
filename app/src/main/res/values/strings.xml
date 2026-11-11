@@ -42,6 +42,7 @@
     <string name="edit_mode_highlighter">Highlighter</string>
     <string name="edit_mode_text">Text</string>
     <string name="edit_mode_shapes">Shapes</string>
+    <string name="edit_mode_redact">Redact</string>
     <string name="edit_mode_brightness">Brightness</string>
     <string name="edit_mode_contrast">Contrast</string>
     <string name="edit_mode_saturation">Saturation</string>
@@ -88,6 +89,10 @@
     <string name="shape_arrow">Arrow</string>
     <string name="shape_filled">Fill shape</string>
     <string name="shape_keep_square">Keep equal sides</string>
+
+    <!-- Redact -->
+    <string name="redact_blur">Blur</string>
+    <string name="redact_mask">Mask</string>
 
     <!-- Drawing colors -->
     <string name="color_white">White</string>
