@@ -11,7 +11,10 @@ import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.CropRotate
 import androidx.compose.material.icons.filled.Filter
+import androidx.compose.material.icons.filled.InvertColors
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -57,6 +60,21 @@ enum class EditMode(val category: Category) {
     CONTRAST(Category.ADJUSTMENTS),
 
     /**
+     * Saturation adjustment.
+     */
+    SATURATION(Category.ADJUSTMENTS),
+
+    /**
+     * Warmth adjustment.
+     */
+    WARMTH(Category.ADJUSTMENTS),
+
+    /**
+     * Tint adjustment.
+     */
+    TINT(Category.ADJUSTMENTS),
+
+    /**
      * Image filters.
      */
     FILTERS(Category.ADJUSTMENTS);
@@ -70,6 +88,9 @@ enum class EditMode(val category: Category) {
             TEXT -> R.string.edit_mode_text
             BRIGHTNESS -> R.string.edit_mode_brightness
             CONTRAST -> R.string.edit_mode_contrast
+            SATURATION -> R.string.edit_mode_saturation
+            WARMTH -> R.string.edit_mode_warmth
+            TINT -> R.string.edit_mode_tint
             FILTERS -> R.string.edit_mode_filters
         }
 
@@ -83,6 +104,9 @@ enum class EditMode(val category: Category) {
             TEXT -> Icons.Filled.TextFields
             BRIGHTNESS -> Icons.Filled.BrightnessMedium
             CONTRAST -> Icons.Filled.Contrast
+            SATURATION -> Icons.Filled.InvertColors
+            WARMTH -> Icons.Filled.Thermostat
+            TINT -> Icons.Filled.Palette
             FILTERS -> Icons.Filled.Filter
         }
 

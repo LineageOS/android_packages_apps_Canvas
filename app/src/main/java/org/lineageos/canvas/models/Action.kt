@@ -34,6 +34,27 @@ sealed interface Action {
         data class Contrast(val value: Float) : Adjustment
 
         /**
+         * Adjust the saturation of the image.
+         *
+         * @param value The saturation value
+         */
+        data class Saturation(val value: Float) : Adjustment
+
+        /**
+         * Adjust the warmth of the image.
+         *
+         * @param value The warmth value
+         */
+        data class Warmth(val value: Float) : Adjustment
+
+        /**
+         * Adjust the tint of the image.
+         *
+         * @param value The tint value
+         */
+        data class Tint(val value: Float) : Adjustment
+
+        /**
          * Apply the sepia color matrix.
          *
          * @param amount 0 keeps the original colors; 1 applies full sepia.
