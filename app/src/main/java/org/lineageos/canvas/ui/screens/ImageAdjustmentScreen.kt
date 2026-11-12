@@ -5,6 +5,7 @@
 
 package org.lineageos.canvas.ui.screens
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,24 +16,28 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
-import org.lineageos.canvas.R
-import org.lineageos.canvas.ext.brightnessColorFilter
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.ui.composables.AdjustmentControls
-import org.lineageos.canvas.ui.composables.CanvasImage
 import org.lineageos.canvas.ui.composables.CanvasBottomBar
+import org.lineageos.canvas.ui.composables.CanvasImage
 
 @Composable
-fun BrightnessScreen(
+fun ImageAdjustmentScreen(
     imageBitmap: ImageBitmap,
     cropRect: IntRect?,
-    onConfirm: (Action.Adjustment.Brightness?) -> Unit,
+    @StringRes label: Int,
+    valueRange: ClosedFloatingPointRange<Float>,
+    neutralValue: Float,
+    colorFilter: (Float) -> ColorFilter,
+    toAction: (Float) -> Action.Adjustment,
+    onConfirm: (Action.Adjustment?) -> Unit,
     onCancel: () -> Unit,
 ) {
-    var brightness by remember { mutableFloatStateOf(0f) }
+    var value by remember { mutableFloatStateOf(neutralValue) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         CanvasImage(
@@ -42,14 +47,14 @@ fun BrightnessScreen(
                 .fillMaxWidth()
                 .weight(1f)
                 .padding(16.dp),
-            colorFilter = remember(brightness) { brightnessColorFilter(brightness) },
+            colorFilter = remember(value) { colorFilter(value) },
         )
 
         AdjustmentControls(
-            label = R.string.edit_mode_brightness,
-            value = brightness,
-            onValueChange = { brightness = it },
-            valueRange = -1f..1f,
+            label = label,
+            value = value,
+            onValueChange = { value = it },
+            valueRange = valueRange,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
@@ -57,7 +62,7 @@ fun BrightnessScreen(
 
         CanvasBottomBar(
             onConfirm = {
-                onConfirm(brightness.takeIf { it != 0f }?.let(Action.Adjustment::Brightness))
+                onConfirm(value.takeIf { it != neutralValue }?.let(toAction))
             },
             onCancel = onCancel,
         )
