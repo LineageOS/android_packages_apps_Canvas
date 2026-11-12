@@ -15,12 +15,17 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.IntRect
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import org.lineageos.canvas.R
+import org.lineageos.canvas.ext.saturationColorFilter
+import org.lineageos.canvas.ext.tintColorFilter
+import org.lineageos.canvas.ext.warmthColorFilter
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.models.EditMode
 import org.lineageos.canvas.ui.LocalSharedTransitionScope
 import org.lineageos.canvas.ui.screens.HomeScreen
 import org.lineageos.canvas.ui.screens.CropScreen
 import org.lineageos.canvas.ui.screens.BrightnessScreen
+import org.lineageos.canvas.ui.screens.ColorAdjustmentScreen
 import org.lineageos.canvas.ui.screens.ContrastScreen
 import org.lineageos.canvas.ui.screens.FiltersScreen
 import org.lineageos.canvas.ui.screens.HighlighterScreen
@@ -114,6 +119,51 @@ fun CanvasNavDisplay(
                 EditMode.CONTRAST -> ContrastScreen(
                     imageBitmap = bitmapWithOverlayActions,
                     cropRect = cropRect,
+                    onConfirm = { action ->
+                        action?.let(onAddAction)
+                        navigationBackStack.removeLastOrNull()
+                    },
+                    onCancel = navigationBackStack::removeLastOrNull,
+                )
+
+                EditMode.SATURATION -> ColorAdjustmentScreen(
+                    imageBitmap = bitmapWithOverlayActions,
+                    cropRect = cropRect,
+                    label = R.string.edit_mode_saturation,
+                    valueRange = 0f..2f,
+                    neutralValue = 1f,
+                    colorFilter = ::saturationColorFilter,
+                    toAction = Action.Adjustment::Saturation,
+                    onConfirm = { action ->
+                        action?.let(onAddAction)
+                        navigationBackStack.removeLastOrNull()
+                    },
+                    onCancel = navigationBackStack::removeLastOrNull,
+                )
+
+                EditMode.WARMTH -> ColorAdjustmentScreen(
+                    imageBitmap = bitmapWithOverlayActions,
+                    cropRect = cropRect,
+                    label = R.string.edit_mode_warmth,
+                    valueRange = -1f..1f,
+                    neutralValue = 0f,
+                    colorFilter = ::warmthColorFilter,
+                    toAction = Action.Adjustment::Warmth,
+                    onConfirm = { action ->
+                        action?.let(onAddAction)
+                        navigationBackStack.removeLastOrNull()
+                    },
+                    onCancel = navigationBackStack::removeLastOrNull,
+                )
+
+                EditMode.TINT -> ColorAdjustmentScreen(
+                    imageBitmap = bitmapWithOverlayActions,
+                    cropRect = cropRect,
+                    label = R.string.edit_mode_tint,
+                    valueRange = -1f..1f,
+                    neutralValue = 0f,
+                    colorFilter = ::tintColorFilter,
+                    toAction = Action.Adjustment::Tint,
                     onConfirm = { action ->
                         action?.let(onAddAction)
                         navigationBackStack.removeLastOrNull()

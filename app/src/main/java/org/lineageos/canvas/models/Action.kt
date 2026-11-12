@@ -33,6 +33,12 @@ sealed interface Action {
          */
         data class Contrast(val value: Float) : Adjustment
 
+        data class Saturation(val value: Float) : Adjustment
+
+        data class Warmth(val value: Float) : Adjustment
+
+        data class Tint(val value: Float) : Adjustment
+
         /**
          * Apply the sepia color matrix.
          *

@@ -12,7 +12,10 @@ import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.CropRotate
 import androidx.compose.material.icons.filled.Filter
+import androidx.compose.material.icons.filled.InvertColors
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.TextFields
+import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -29,6 +32,9 @@ val EditMode.titleResId: Int
         EditMode.TEXT -> R.string.edit_mode_text
         EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
         EditMode.CONTRAST -> R.string.edit_mode_contrast
+        EditMode.SATURATION -> R.string.edit_mode_saturation
+        EditMode.WARMTH -> R.string.edit_mode_warmth
+        EditMode.TINT -> R.string.edit_mode_tint
         EditMode.FILTERS -> R.string.edit_mode_filters
     }
 
@@ -42,5 +48,8 @@ val EditMode.icon: ImageVector
         EditMode.TEXT -> Icons.Filled.TextFields
         EditMode.BRIGHTNESS -> Icons.Filled.BrightnessMedium
         EditMode.CONTRAST -> Icons.Filled.Contrast
+        EditMode.SATURATION -> Icons.Filled.InvertColors
+        EditMode.WARMTH -> Icons.Filled.Thermostat
+        EditMode.TINT -> Icons.Filled.Palette
         EditMode.FILTERS -> Icons.Filled.Filter
     }

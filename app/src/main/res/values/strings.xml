@@ -39,6 +39,9 @@
     <string name="edit_mode_text">Text</string>
     <string name="edit_mode_brightness">Brightness</string>
     <string name="edit_mode_contrast">Contrast</string>
+    <string name="edit_mode_saturation">Saturation</string>
+    <string name="edit_mode_warmth">Warmth</string>
+    <string name="edit_mode_tint">Tint</string>
     <string name="edit_mode_filters">Filters</string>
 
     <!-- Rotation -->

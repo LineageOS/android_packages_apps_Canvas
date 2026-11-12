@@ -49,6 +49,49 @@ fun contrastColorFilter(value: Float): ColorFilter {
     return ColorFilter.colorMatrix(matrix)
 }
 
+fun saturationColorFilter(value: Float): ColorFilter {
+    val s = value.coerceIn(0f, 2f)
+    val r = 0.299f * (1f - s)
+    val g = 0.587f * (1f - s)
+    val b = 0.114f * (1f - s)
+    val matrix = ColorMatrix(
+        floatArrayOf(
+            r + s, g, b, 0f, 0f,
+            r, g + s, b, 0f, 0f,
+            r, g, b + s, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )
+    return ColorFilter.colorMatrix(matrix)
+}
+
+fun warmthColorFilter(value: Float): ColorFilter {
+    val shift = value.coerceIn(-1f, 1f) * COLOR_BALANCE_STRENGTH
+    val matrix = ColorMatrix(
+        floatArrayOf(
+            1f + shift, 0f, 0f, 0f, 0f,
+            0f, 1f, 0f, 0f, 0f,
+            0f, 0f, 1f - shift, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )
+    return ColorFilter.colorMatrix(matrix)
+}
+
+fun tintColorFilter(value: Float): ColorFilter {
+    val shift = value.coerceIn(-1f, 1f) * COLOR_BALANCE_STRENGTH
+    val matrix = ColorMatrix(
+        floatArrayOf(
+            1f + shift / 2f, 0f, 0f, 0f, 0f,
+            0f, 1f - shift, 0f, 0f, 0f,
+            0f, 0f, 1f + shift / 2f, 0f, 0f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    )
+    return ColorFilter.colorMatrix(matrix)
+}
+
+private const val COLOR_BALANCE_STRENGTH = 0.3f
 
 /**
  * Applies a sepia tone.
@@ -151,6 +194,15 @@ fun ImageBitmap.applySepia(amount: Float): ImageBitmap =
 
 fun ImageBitmap.applyGrey(saturation: Float): ImageBitmap =
     if (saturation == 1f) this else applyColorFilter(greyColorFilter(saturation))
+
+fun ImageBitmap.adjustSaturation(value: Float): ImageBitmap =
+    if (value == 1f) this else applyColorFilter(saturationColorFilter(value))
+
+fun ImageBitmap.adjustWarmth(value: Float): ImageBitmap =
+    if (value == 0f) this else applyColorFilter(warmthColorFilter(value))
+
+fun ImageBitmap.adjustTint(value: Float): ImageBitmap =
+    if (value == 0f) this else applyColorFilter(tintColorFilter(value))
 
 private fun ImageBitmap.applyColorFilter(colorFilter: ColorFilter): ImageBitmap {
     val output = ImageBitmap(

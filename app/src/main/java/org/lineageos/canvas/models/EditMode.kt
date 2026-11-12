@@ -44,6 +44,12 @@ enum class EditMode(val category: Category) {
      */
     CONTRAST(Category.ADJUSTMENTS),
 
+    SATURATION(Category.ADJUSTMENTS),
+
+    WARMTH(Category.ADJUSTMENTS),
+
+    TINT(Category.ADJUSTMENTS),
+
     /**
      * Image filters.
      */

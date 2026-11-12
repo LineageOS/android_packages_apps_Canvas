@@ -122,6 +122,9 @@ private val Action.editMode: EditMode?
     get() = when (this) {
         is Action.Adjustment.Brightness -> EditMode.BRIGHTNESS
         is Action.Adjustment.Contrast -> EditMode.CONTRAST
+        is Action.Adjustment.Saturation -> EditMode.SATURATION
+        is Action.Adjustment.Warmth -> EditMode.WARMTH
+        is Action.Adjustment.Tint -> EditMode.TINT
         is Action.Adjustment.Grey -> EditMode.FILTERS
         is Action.Adjustment.Sepia -> EditMode.FILTERS
         is Action.Transformation.Crop -> EditMode.CROP
@@ -148,6 +151,9 @@ private val Action.titleResId: Int
 private fun Action.detail(): String? = when (this) {
     is Action.Adjustment.Brightness -> stringResource(R.string.adjustment_percent, value * 100)
     is Action.Adjustment.Contrast -> stringResource(R.string.adjustment_percent, value * 100)
+    is Action.Adjustment.Saturation -> stringResource(R.string.adjustment_percent, value * 100)
+    is Action.Adjustment.Warmth -> stringResource(R.string.adjustment_percent, value * 100)
+    is Action.Adjustment.Tint -> stringResource(R.string.adjustment_percent, value * 100)
     is Action.Adjustment.Grey -> stringResource(
         R.string.adjustment_percent, (1f - saturation) * 100
     )
