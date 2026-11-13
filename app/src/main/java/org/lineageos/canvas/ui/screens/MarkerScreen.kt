@@ -89,7 +89,7 @@ fun HighlighterScreen(
 ) = StrokeScreen(
     imageBitmap = imageBitmap,
     initialColor = Color.Yellow,
-    colorTransform = { it.copy(alpha = 0.4f) },
+    colorTransform = { it.copy(alpha = it.alpha * 0.4f) },
     defaultStrokeWidth = HIGHLIGHTER_STROKE_WIDTH,
     createAction = { points, color, strokeWidth ->
         Action.Drawing.Highlighter(

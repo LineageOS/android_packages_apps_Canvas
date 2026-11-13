@@ -60,6 +60,11 @@
     <string name="color_yellow">Yellow</string>
     <string name="color_cyan">Cyan</string>
     <string name="color_magenta">Magenta</string>
+    <string name="color_custom">Custom color</string>
+    <string name="color_hue">Hue</string>
+    <string name="color_saturation">Saturation</string>
+    <string name="color_brightness">Brightness</string>
+    <string name="color_opacity">Opacity</string>
 
     <!-- Text editor -->
     <string name="enter_text">Enter text…</string>
