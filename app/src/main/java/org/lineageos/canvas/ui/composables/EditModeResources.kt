@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import org.lineageos.canvas.R
 import org.lineageos.canvas.models.EditMode
+import org.lineageos.canvas.models.FilterPreset
 
 @get:StringRes
 val EditMode.titleResId: Int
@@ -52,4 +53,15 @@ val EditMode.icon: ImageVector
         EditMode.WARMTH -> Icons.Filled.Thermostat
         EditMode.TINT -> Icons.Filled.Palette
         EditMode.FILTERS -> Icons.Filled.Filter
+    }
+
+@get:StringRes
+val FilterPreset.titleResId: Int
+    get() = when (this) {
+        FilterPreset.PUNCH -> R.string.filter_punch
+        FilterPreset.VINTAGE -> R.string.filter_vintage
+        FilterPreset.COOL -> R.string.filter_cool
+        FilterPreset.NOIR -> R.string.filter_noir
+        FilterPreset.FADE -> R.string.filter_fade
+        FilterPreset.NEGATIVE -> R.string.filter_negative
     }

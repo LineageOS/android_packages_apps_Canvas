@@ -24,9 +24,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.AcUnit
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.CameraRoll
+import androidx.compose.material.icons.filled.Exposure
 import androidx.compose.material.icons.filled.FilterBAndW
 import androidx.compose.material.icons.filled.FilterVintage
 import androidx.compose.material.icons.filled.Image
+import androidx.compose.material.icons.filled.Tonality
+import androidx.compose.material.icons.filled.WbCloudy
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,16 +62,20 @@ import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.dp
 import org.lineageos.canvas.R
 import org.lineageos.canvas.ext.greyColorFilter
+import org.lineageos.canvas.ext.presetColorFilter
 import org.lineageos.canvas.ext.sepiaColorFilter
 import org.lineageos.canvas.models.Action
+import org.lineageos.canvas.models.FilterPreset
 import org.lineageos.canvas.ui.composables.CanvasBottomBar
 import org.lineageos.canvas.ui.composables.CanvasImage
 import org.lineageos.canvas.ui.composables.ToolbarTooltip
+import org.lineageos.canvas.ui.composables.titleResId
 
 private enum class FilterChoice(
     @param:StringRes val label: Int,
     val icon: ImageVector,
     val defaultAmount: Float? = null,
+    val preset: FilterPreset? = null,
 ) {
     ORIGINAL(R.string.filter_none, Icons.Filled.Image) {
         override fun colorFilter(amount: Float): ColorFilter? = null
@@ -80,12 +90,23 @@ private enum class FilterChoice(
         override fun colorFilter(amount: Float) = sepiaColorFilter(amount)
         override fun action(amount: Float) =
             amount.takeIf { it != 0f }?.let(Action.Adjustment::Sepia)
-    };
+    },
+    PUNCH(FilterPreset.PUNCH, Icons.Filled.Bolt),
+    VINTAGE(FilterPreset.VINTAGE, Icons.Filled.CameraRoll),
+    COOL(FilterPreset.COOL, Icons.Filled.AcUnit),
+    NOIR(FilterPreset.NOIR, Icons.Filled.Tonality),
+    FADE(FilterPreset.FADE, Icons.Filled.WbCloudy),
+    NEGATIVE(FilterPreset.NEGATIVE, Icons.Filled.Exposure);
+
+    constructor(preset: FilterPreset, icon: ImageVector) : this(preset.titleResId, icon, 1f, preset)
 
     val adjustable get() = defaultAmount != null
 
-    abstract fun colorFilter(amount: Float): ColorFilter?
-    abstract fun action(amount: Float): Action.Adjustment?
+    open fun colorFilter(amount: Float): ColorFilter? =
+        preset?.let { presetColorFilter(it, amount) }
+
+    open fun action(amount: Float): Action.Adjustment? =
+        preset?.let { preset -> amount.takeIf { it != 0f }?.let { Action.Adjustment.Preset(preset, it) } }
 }
 
 private data class FilterSelection(
