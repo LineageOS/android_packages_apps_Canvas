@@ -108,6 +108,12 @@ sealed interface Action {
          *
          * @param marker The marker to clear
          */
+        data class Watermark(
+            val text: String,
+            val color: Color,
+            val textSize: Float,
+        ) : Drawing
+
         data class Eraser(
             val marker: Marker,
         ) : Drawing

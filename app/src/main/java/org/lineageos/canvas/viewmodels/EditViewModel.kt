@@ -47,6 +47,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import org.lineageos.canvas.ext.drawWatermark
 import org.lineageos.canvas.ext.rotateBy
 import org.lineageos.canvas.ext.adjustBrightness
 import org.lineageos.canvas.ext.adjustContrast
@@ -334,6 +335,17 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                         style = action.style,
                     )
                 }
+
+                is Action.Drawing.Watermark -> drawWatermark(
+                    text = action.text,
+                    color = action.color,
+                    textSize = action.textSize,
+                    textMeasurer = TextMeasurer(
+                        defaultFontFamilyResolver = fontFamilyResolver,
+                        defaultDensity = this,
+                        defaultLayoutDirection = layoutDirection,
+                    ),
+                )
 
                 is Action.Drawing.Eraser -> drawStroke(
                     points = action.marker.points,

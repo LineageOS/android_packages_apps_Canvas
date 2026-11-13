@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
+import androidx.compose.material.icons.filled.BrandingWatermark
 import androidx.compose.material.icons.filled.BrightnessMedium
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -315,6 +316,7 @@ fun EditModeButton(
             EditMode.MARKER -> R.string.edit_mode_marker
             EditMode.HIGHLIGHTER -> R.string.edit_mode_highlighter
             EditMode.TEXT -> R.string.edit_mode_text
+            EditMode.WATERMARK -> R.string.edit_mode_watermark
             EditMode.BRIGHTNESS -> R.string.edit_mode_brightness
             EditMode.CONTRAST -> R.string.edit_mode_contrast
             EditMode.FILTERS -> R.string.edit_mode_filters
@@ -332,6 +334,7 @@ fun EditModeButton(
                     EditMode.MARKER -> ImageVector.vectorResource(R.drawable.ic_ink_pen)
                     EditMode.HIGHLIGHTER -> ImageVector.vectorResource(R.drawable.ic_ink_highlighter)
                     EditMode.TEXT -> Icons.Filled.TextFields
+                    EditMode.WATERMARK -> Icons.Filled.BrandingWatermark
                     EditMode.BRIGHTNESS -> Icons.Filled.BrightnessMedium
                     EditMode.CONTRAST -> Icons.Filled.Contrast
                     EditMode.FILTERS -> Icons.Filled.Filter

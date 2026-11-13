@@ -30,6 +30,7 @@
     <string name="edit_mode_marker">Marker</string>
     <string name="edit_mode_highlighter">Highlighter</string>
     <string name="edit_mode_text">Text</string>
+    <string name="edit_mode_watermark">Watermark</string>
     <string name="edit_mode_brightness">Brightness</string>
     <string name="edit_mode_contrast">Contrast</string>
     <string name="edit_mode_filters">Filters</string>
@@ -65,6 +66,10 @@
     <string name="color_saturation">Saturation</string>
     <string name="color_brightness">Brightness</string>
     <string name="color_opacity">Opacity</string>
+
+    <!-- Watermark -->
+    <string name="watermark_text">Watermark text</string>
+    <string name="watermark_size">Size</string>
 
     <!-- Text editor -->
     <string name="enter_text">Enter text…</string>
