@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.magnifier
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Redo
 import androidx.compose.material.icons.automirrored.filled.Undo
@@ -40,6 +41,7 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import org.lineageos.canvas.R
 import org.lineageos.canvas.models.Action
@@ -102,6 +104,10 @@ fun HighlighterScreen(
     onCancel = onCancel,
 )
 
+private const val MAGNIFIER_ZOOM = 2f
+private val MAGNIFIER_SIZE = 112.dp
+private val MAGNIFIER_OFFSET = 112.dp
+
 @Composable
 private fun StrokeScreen(
     imageBitmap: ImageBitmap,
@@ -115,6 +121,7 @@ private fun StrokeScreen(
     var imageInformation by remember { mutableStateOf<ImageInformation?>(null) }
     var isDrawing by remember { mutableStateOf(false) }
     var previewPoints by remember { mutableStateOf(emptyList<Offset>()) }
+    var touchPosition by remember { mutableStateOf(Offset.Unspecified) }
     var imagePoints by remember { mutableStateOf(emptyList<IntOffset>()) }
     var color by remember { mutableStateOf(initialColor) }
     var activeStrokeColor by remember { mutableStateOf(initialColor) }
@@ -146,12 +153,22 @@ private fun StrokeScreen(
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
+                    .magnifier(
+                        sourceCenter = { touchPosition },
+                        magnifierCenter = {
+                            touchPosition - Offset(0f, MAGNIFIER_OFFSET.toPx())
+                        },
+                        zoom = MAGNIFIER_ZOOM,
+                        size = DpSize(MAGNIFIER_SIZE, MAGNIFIER_SIZE),
+                        cornerRadius = MAGNIFIER_SIZE / 2,
+                    )
                     .pointerInput(imageInformation) {
                         detectDragGestures(
                             onDragStart = { offset ->
                                 val info = imageInformation
                                 isDrawing = info != null && info.imageViewRect.contains(offset)
                                 if (isDrawing) {
+                                    touchPosition = offset
                                     previewPoints = listOf(offset)
                                     imagePoints = listOf(info!!.viewOffsetToOriginalBitmap(offset))
                                     activeStrokeColor = colorTransform(color)
@@ -177,11 +194,13 @@ private fun StrokeScreen(
                                     undoneStrokes = emptyList()
                                 }
                                 isDrawing = false
+                                touchPosition = Offset.Unspecified
                                 previewPoints = emptyList()
                                 imagePoints = emptyList()
                             },
                             onDragCancel = {
                                 isDrawing = false
+                                touchPosition = Offset.Unspecified
                                 previewPoints = emptyList()
                                 imagePoints = emptyList()
                             },
@@ -190,6 +209,7 @@ private fun StrokeScreen(
                                 if (!isDrawing) return@detectDragGestures
 
                                 val info = imageInformation ?: return@detectDragGestures
+                                touchPosition = change.position
                                 previewPoints = previewPoints + change.position
                                 imagePoints = imagePoints + info.viewOffsetToOriginalBitmap(
                                     change.position,
