@@ -53,6 +53,7 @@ import org.lineageos.canvas.ext.adjustContrast
 import org.lineageos.canvas.ext.adjustSaturation
 import org.lineageos.canvas.ext.adjustTint
 import org.lineageos.canvas.ext.adjustWarmth
+import org.lineageos.canvas.ext.applyPreset
 import org.lineageos.canvas.ext.applyGrey
 import org.lineageos.canvas.ext.applySepia
 import org.lineageos.canvas.ext.size
@@ -278,6 +279,7 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
         is Action.Adjustment.Tint -> adjustTint(action.value)
         is Action.Adjustment.Grey -> applyGrey(action.saturation)
         is Action.Adjustment.Sepia -> applySepia(action.amount)
+        is Action.Adjustment.Preset -> applyPreset(action.preset, action.amount)
         is Action.Transformation.Crop -> crop(action.rect)
         is Action.Transformation.Rotation -> rotateBy(action.rotation)
         is Action.Drawing -> createEmptyBitmap(hasAlpha = true).draw {
@@ -304,7 +306,8 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                     // Handled by the action replay pipeline
                 }
 
-                is Action.Adjustment.Sepia -> {
+                is Action.Adjustment.Sepia,
+                is Action.Adjustment.Preset -> {
                     // Handled by the action replay pipeline
                 }
             }

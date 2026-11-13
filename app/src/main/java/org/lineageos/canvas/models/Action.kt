@@ -52,6 +52,8 @@ sealed interface Action {
          * @param saturation 0 is fully grey; 1 keeps the original colors.
          */
         data class Grey(val saturation: Float) : Adjustment
+
+        data class Preset(val preset: FilterPreset, val amount: Float) : Adjustment
     }
 
     /**

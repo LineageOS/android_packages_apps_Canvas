@@ -127,6 +127,7 @@ private val Action.editMode: EditMode?
         is Action.Adjustment.Tint -> EditMode.TINT
         is Action.Adjustment.Grey -> EditMode.FILTERS
         is Action.Adjustment.Sepia -> EditMode.FILTERS
+        is Action.Adjustment.Preset -> EditMode.FILTERS
         is Action.Transformation.Crop -> EditMode.CROP
         is Action.Transformation.Rotation -> EditMode.ROTATION
         is Action.Drawing.Marker -> EditMode.MARKER
@@ -143,6 +144,7 @@ private val Action.titleResId: Int
     get() = when (this) {
         is Action.Adjustment.Grey -> R.string.filter_grey
         is Action.Adjustment.Sepia -> R.string.filter_sepia
+        is Action.Adjustment.Preset -> preset.titleResId
         is Action.Drawing.Eraser -> R.string.history_eraser
         else -> editMode?.titleResId ?: error("No title for $this")
     }
@@ -159,6 +161,7 @@ private fun Action.detail(): String? = when (this) {
     )
 
     is Action.Adjustment.Sepia -> stringResource(R.string.adjustment_percent, amount * 100)
+    is Action.Adjustment.Preset -> stringResource(R.string.adjustment_percent, amount * 100)
     is Action.Transformation.Crop -> stringResource(
         R.string.history_crop_size, rect.width, rect.height
     )

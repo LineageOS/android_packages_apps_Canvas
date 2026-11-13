@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
+import org.lineageos.canvas.models.FilterPreset
 
 /**
  * Adjusts brightness.
@@ -92,6 +93,56 @@ fun tintColorFilter(value: Float): ColorFilter {
 }
 
 private const val COLOR_BALANCE_STRENGTH = 0.3f
+
+fun presetColorFilter(preset: FilterPreset, amount: Float): ColorFilter {
+    val t = amount.coerceIn(0f, 1f)
+    val target = preset.matrix
+    val identity = ColorMatrix().values
+    return ColorFilter.colorMatrix(
+        ColorMatrix(FloatArray(20) { identity[it] + (target[it] - identity[it]) * t })
+    )
+}
+
+private val FilterPreset.matrix: FloatArray
+    get() = when (this) {
+        FilterPreset.PUNCH -> saturated(1.4f, contrast = 1.15f)
+        FilterPreset.VINTAGE -> floatArrayOf(
+            0.62f, 0.32f, 0.08f, 0f, 22f,
+            0.18f, 0.66f, 0.07f, 0f, 18f,
+            0.13f, 0.27f, 0.42f, 0f, 14f,
+            0f, 0f, 0f, 1f, 0f
+        )
+
+        FilterPreset.COOL -> floatArrayOf(
+            0.92f, 0.02f, 0.01f, 0f, 0f,
+            0.01f, 0.98f, 0.01f, 0f, 2f,
+            0.01f, 0.02f, 1.04f, 0f, 8f,
+            0f, 0f, 0f, 1f, 0f
+        )
+
+        FilterPreset.NOIR -> saturated(0f, contrast = 1.45f)
+        FilterPreset.FADE -> saturated(0.75f, contrast = 0.78f, lift = 24f)
+        FilterPreset.NEGATIVE -> floatArrayOf(
+            -1f, 0f, 0f, 0f, 255f,
+            0f, -1f, 0f, 0f, 255f,
+            0f, 0f, -1f, 0f, 255f,
+            0f, 0f, 0f, 1f, 0f
+        )
+    }
+
+private fun saturated(saturation: Float, contrast: Float, lift: Float = 0f): FloatArray {
+    val r = 0.299f * (1f - saturation) * contrast
+    val g = 0.587f * (1f - saturation) * contrast
+    val b = 0.114f * (1f - saturation) * contrast
+    val s = saturation * contrast
+    val offset = (1f - contrast) * 128f + lift
+    return floatArrayOf(
+        r + s, g, b, 0f, offset,
+        r, g + s, b, 0f, offset,
+        r, g, b + s, 0f, offset,
+        0f, 0f, 0f, 1f, 0f
+    )
+}
 
 /**
  * Applies a sepia tone.
@@ -203,6 +254,9 @@ fun ImageBitmap.adjustWarmth(value: Float): ImageBitmap =
 
 fun ImageBitmap.adjustTint(value: Float): ImageBitmap =
     if (value == 0f) this else applyColorFilter(tintColorFilter(value))
+
+fun ImageBitmap.applyPreset(preset: FilterPreset, amount: Float): ImageBitmap =
+    if (amount == 0f) this else applyColorFilter(presetColorFilter(preset, amount))
 
 private fun ImageBitmap.applyColorFilter(colorFilter: ColorFilter): ImageBitmap {
     val output = ImageBitmap(
