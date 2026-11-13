@@ -32,6 +32,7 @@ import org.lineageos.canvas.ui.screens.HighlighterScreen
 import org.lineageos.canvas.ui.screens.MarkerScreen
 import org.lineageos.canvas.ui.screens.RotationScreen
 import org.lineageos.canvas.ui.screens.TextScreen
+import org.lineageos.canvas.ui.screens.WatermarkScreen
 
 @Composable
 fun CanvasNavDisplay(
@@ -103,6 +104,16 @@ fun CanvasNavDisplay(
                     imageBitmap = finalResultBitmap,
                     cropRect = cropRect,
                     onAddAction = onAddAction,
+                    onCancel = navigationBackStack::removeLastOrNull,
+                )
+
+                EditMode.WATERMARK -> WatermarkScreen(
+                    imageBitmap = finalResultBitmap,
+                    cropRect = cropRect,
+                    onConfirm = { action ->
+                        action?.let(onAddAction)
+                        navigationBackStack.removeLastOrNull()
+                    },
                     onCancel = navigationBackStack::removeLastOrNull,
                 )
 

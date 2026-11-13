@@ -6,6 +6,7 @@
 package org.lineageos.canvas.models
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrandingWatermark
 import androidx.compose.material.icons.filled.BrightnessMedium
 import androidx.compose.material.icons.filled.Contrast
 import androidx.compose.material.icons.filled.Crop
@@ -49,6 +50,8 @@ enum class EditMode(val category: Category) {
      */
     TEXT(Category.DRAWING),
 
+    WATERMARK(Category.DRAWING),
+
     /**
      * Brightness adjustment.
      */
@@ -86,6 +89,7 @@ enum class EditMode(val category: Category) {
             MARKER -> R.string.edit_mode_marker
             HIGHLIGHTER -> R.string.edit_mode_highlighter
             TEXT -> R.string.edit_mode_text
+            WATERMARK -> R.string.edit_mode_watermark
             BRIGHTNESS -> R.string.edit_mode_brightness
             CONTRAST -> R.string.edit_mode_contrast
             SATURATION -> R.string.edit_mode_saturation
@@ -102,6 +106,7 @@ enum class EditMode(val category: Category) {
             MARKER -> ImageVector.vectorResource(R.drawable.ic_ink_pen)
             HIGHLIGHTER -> ImageVector.vectorResource(R.drawable.ic_ink_highlighter)
             TEXT -> Icons.Filled.TextFields
+            WATERMARK -> Icons.Filled.BrandingWatermark
             BRIGHTNESS -> Icons.Filled.BrightnessMedium
             CONTRAST -> Icons.Filled.Contrast
             SATURATION -> Icons.Filled.InvertColors
