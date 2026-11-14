@@ -122,18 +122,4 @@ enum class RotationStep(val degrees: Float) {
     ROT_90(90f),
     ROT_180(180f),
     ROT_270(270f);
-
-    fun clockwise() = when (this) {
-        ROT_0 -> ROT_90
-        ROT_90 -> ROT_180
-        ROT_180 -> ROT_270
-        ROT_270 -> ROT_0
-    }
-
-    fun counterClockwise() = when (this) {
-        ROT_0 -> ROT_270
-        ROT_90 -> ROT_0
-        ROT_180 -> ROT_90
-        ROT_270 -> ROT_180
-    }
 }
