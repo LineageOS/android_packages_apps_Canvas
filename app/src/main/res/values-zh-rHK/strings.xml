@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <string name="save">儲存</string>
+    <string name="more">更多…</string>
+    <string name="enter_text">輸入文字…</string>
+    <string name="text_alignment_center">置中</string>
+    <string name="text_color_cyan">青藍色</string>
+</resources>

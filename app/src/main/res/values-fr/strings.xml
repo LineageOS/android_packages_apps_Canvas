@@ -5,13 +5,33 @@
 -->
 <resources>
     <string name="close">Fermer</string>
+    <string name="back">Retour</string>
+    <string name="cancel_action">Annuler l\'action</string>
+    <string name="confirm_action">Confirmer l\'action</string>
+    <string name="undo">Défaire</string>
+    <string name="redo">Refaire</string>
     <string name="save">Enregistrer</string>
     <string name="save_as">Enregistrer sous...</string>
     <string name="share">Partager</string>
     <string name="more">Plus...</string>
+    <string name="category_transformation">Transformer l\'image</string>
+    <string name="category_drawing">Outils de dessin</string>
+    <string name="category_adjustments">Ajustements d\'image</string>
+    <string name="edit_mode_crop">Rogner</string>
+    <string name="edit_mode_rotation">Rotation</string>
+    <string name="edit_mode_marker">Marqueur</string>
+    <string name="edit_mode_highlighter">Surligneur</string>
     <string name="edit_mode_text">Texte</string>
+    <string name="edit_mode_brightness">Luminosité</string>
+    <string name="edit_mode_contrast">Contraste</string>
+    <string name="edit_mode_filters">Filtres</string>
+    <string name="rotate_counterclockwise">Rotation dans le sens antihoraire</string>
+    <string name="rotate_clockwise">Rotation dans le sens horaire</string>
+    <string name="filter_none">Original</string>
     <string name="filter_grey">Gris</string>
     <string name="filter_sepia">Sépia</string>
+    <string name="filter_select_hint">Sélectionnez un filtre à prévisualiser</string>
+    <string name="filter_tap_again_to_adjust">Tapez à nouveau sur le filtre sélectionné pour ajuster</string>
     <string name="color_white">Blanc</string>
     <string name="color_black">Noir</string>
     <string name="color_red">Rouge</string>
@@ -20,6 +40,7 @@
     <string name="color_yellow">Jaune</string>
     <string name="color_cyan">Cyan</string>
     <string name="color_magenta">Magenta</string>
+    <string name="enter_text">Entrez le texte…</string>
     <string name="text_decoration_bold">Gras</string>
     <string name="text_decoration_italic">Italique</string>
     <string name="text_decoration_underlined">Souligné</string>
