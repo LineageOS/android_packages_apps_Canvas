@@ -6,6 +6,7 @@
 package org.lineageos.canvas
 
 import android.content.ClipData
+import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -32,7 +33,11 @@ class MainActivity : ComponentActivity() {
     private val resultOpsViewModel: ResultOpsViewModel by viewModels()
 
     private val onNewIntentListener = Consumer<Intent> { intent ->
-        val uri = intent.takeIf { it.action == Intent.ACTION_EDIT }?.data ?: run {
+        val uri = when (intent.action) {
+            Intent.ACTION_EDIT -> intent.data
+            Intent.ACTION_SEND -> intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+            else -> null
+        } ?: run {
             finish()
             return@Consumer
         }
@@ -78,7 +83,16 @@ class MainActivity : ComponentActivity() {
                             )
                             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         }
-                        startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
+                        val chooserIntent = Intent.createChooser(
+                            shareIntent,
+                            getString(R.string.share),
+                        ).apply {
+                            putExtra(
+                                Intent.EXTRA_EXCLUDE_COMPONENTS,
+                                arrayOf(ComponentName(this@MainActivity, MainActivity::class.java)),
+                            )
+                        }
+                        startActivity(chooserIntent)
                     }
 
                     else -> {}

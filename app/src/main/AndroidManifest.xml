@@ -24,6 +24,13 @@
                 <data android:mimeType="image/png" />
                 <data android:mimeType="image/webp" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/jpeg" />
+                <data android:mimeType="image/png" />
+                <data android:mimeType="image/webp" />
+            </intent-filter>
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
