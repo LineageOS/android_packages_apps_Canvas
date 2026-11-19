@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -36,6 +37,7 @@ fun CanvasApp(
     onSave: () -> Unit,
     onSaveAs: () -> Unit,
     onShare: () -> Unit,
+    onCurrentScreenChange: (Screen) -> Unit,
 ) {
     val isWritable by editViewModel.isWritable.collectAsState()
 
@@ -53,6 +55,11 @@ fun CanvasApp(
     var currentCategory by remember { mutableStateOf<EditMode.Category?>(null) }
 
     val navigationBackStack = remember { mutableStateListOf<Screen>(Screen.Home) }
+    val currentScreen = navigationBackStack.last()
+
+    LaunchedEffect(currentScreen) {
+        onCurrentScreenChange(currentScreen)
+    }
 
     SharedTransitionScope { modifier ->
         CompositionLocalProvider(LocalSharedTransitionScope provides this) {
@@ -62,7 +69,7 @@ fun CanvasApp(
                     CanvasTopAppBar(
                         canClose = navigationBackStack.size == 1,
                         onClose = onClose,
-                        currentScreen = navigationBackStack.last(),
+                        currentScreen = currentScreen,
                         isWritable = isWritable,
                         onSave = onSave,
                         onSaveAs = onSaveAs,
