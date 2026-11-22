@@ -6,6 +6,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.lineageos.canvas">
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.OPEN_EYE_DROPPER" />
+        </intent>
+    </queries>
+
     <application
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"

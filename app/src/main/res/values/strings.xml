@@ -83,6 +83,7 @@
     <string name="color_cyan">Cyan</string>
     <string name="color_magenta">Magenta</string>
     <string name="color_custom">Custom color</string>
+    <string name="color_pick_from_screen">Pick a color from the screen</string>
     <string name="color_hue">Hue</string>
     <string name="color_saturation">Saturation</string>
     <string name="color_brightness">Brightness</string>

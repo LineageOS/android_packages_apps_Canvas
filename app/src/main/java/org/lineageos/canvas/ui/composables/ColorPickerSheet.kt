@@ -5,7 +5,15 @@
 
 package org.lineageos.canvas.ui.composables
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color.colorToHSV
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,9 +24,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Colorize
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Slider
@@ -29,7 +42,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
@@ -38,10 +53,12 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.lineageos.canvas.R
 
 val hueSpectrum = List(7) { Color.hsv(it * 60f % 360f, 1f, 1f) }
@@ -55,6 +72,8 @@ private data class SliderConfig(
     val checkered: Boolean = false,
 )
 
+// The eye dropper constants are inlined and only used once it's known to be available
+@SuppressLint("InlinedApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColorPickerSheet(
@@ -69,6 +88,28 @@ fun ColorPickerSheet(
     var saturation by remember { mutableFloatStateOf(initialHsv[1]) }
     var brightness by remember { mutableFloatStateOf(initialHsv[2]) }
     var opacity by remember { mutableFloatStateOf(initialColor.alpha) }
+
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+
+    val context = LocalContext.current
+    val isEyeDropperAvailable = remember(context) { context.isEyeDropperAvailable() }
+    val eyeDropperLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        result.data
+            ?.takeIf { result.resultCode == Activity.RESULT_OK }
+            ?.takeIf { it.hasExtra(Intent.EXTRA_COLOR) }
+            ?.getIntExtra(Intent.EXTRA_COLOR, 0)
+            ?.let {
+                // Keep the opacity, the picked color is always opaque
+                val hsv = FloatArray(3).also { hsv -> colorToHSV(it, hsv) }
+                hue = hsv[0]
+                saturation = hsv[1]
+                brightness = hsv[2]
+            }
+        scope.launch { sheetState.show() }
+    }
 
     val opaqueColor = Color.hsv(hue, saturation, brightness)
     val color = opaqueColor.copy(alpha = opacity)
@@ -98,7 +139,7 @@ fun ColorPickerSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        sheetState = sheetState,
     ) {
         Column(
             modifier = Modifier
@@ -112,14 +153,43 @@ fun ColorPickerSheet(
                 style = MaterialTheme.typography.titleLarge,
             )
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .checkerboard()
-                    .background(color),
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .checkerboard()
+                        .background(color),
+                )
+
+                if (isEyeDropperAvailable) {
+                    val description = stringResource(R.string.color_pick_from_screen)
+
+                    ToolbarTooltip(description) {
+                        FilledTonalIconButton(
+                            onClick = {
+                                // Hide the sheet so that the whole image can be picked from
+                                scope.launch {
+                                    sheetState.hide()
+                                    eyeDropperLauncher.launch(
+                                        Intent(Intent.ACTION_OPEN_EYE_DROPPER)
+                                    )
+                                }
+                            },
+                            modifier = Modifier.size(56.dp),
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.Colorize,
+                                contentDescription = description,
+                            )
+                        }
+                    }
+                }
+            }
 
             sliders.forEach { config ->
                 ColorSlider(config)
@@ -187,3 +257,11 @@ private fun Modifier.checkerboard(enabled: Boolean = true) =
             }
         }
     }
+
+/**
+ * Whether the system eye dropper (Android 17+) can be launched. It's behind a feature flag, so
+ * also check that something actually handles the intent.
+ */
+@ChecksSdkIntAtLeast(api = 37)
+private fun Context.isEyeDropperAvailable() = Build.VERSION.SDK_INT >= 37 &&
+        packageManager.resolveActivity(Intent(Intent.ACTION_OPEN_EYE_DROPPER), 0) != null
