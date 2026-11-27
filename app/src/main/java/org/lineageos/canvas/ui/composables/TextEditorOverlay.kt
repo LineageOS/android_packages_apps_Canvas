@@ -30,11 +30,13 @@ import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -105,43 +107,46 @@ fun TextEditorOverlay(
         modifier = modifier.background(Color.Black.copy(alpha = 0.8f)),
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.Top),
     ) {
-        Row(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            val cancelDescription = stringResource(R.string.cancel_action)
-            ToolbarTooltip(cancelDescription) {
-                IconButton(onClick = onDismiss) {
-                    Icon(
-                        Icons.Default.Close,
-                        contentDescription = cancelDescription,
-                    )
+        // The overlay is always dark, whatever the theme
+        CompositionLocalProvider(LocalContentColor provides Color.White) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val cancelDescription = stringResource(R.string.cancel_action)
+                ToolbarTooltip(cancelDescription) {
+                    IconButton(onClick = onDismiss) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = cancelDescription,
+                        )
+                    }
                 }
-            }
 
-            val confirmDescription = stringResource(R.string.confirm_action)
-            ToolbarTooltip(confirmDescription) {
-                IconButton(
-                    onClick = {
-                        val text = textFieldState.text.trim()
-                        when (text.isNotBlank()) {
-                            true -> onConfirm(
-                                text.toString(),
-                                textStyle,
-                            )
+                val confirmDescription = stringResource(R.string.confirm_action)
+                ToolbarTooltip(confirmDescription) {
+                    IconButton(
+                        onClick = {
+                            val text = textFieldState.text.trim()
+                            when (text.isNotBlank()) {
+                                true -> onConfirm(
+                                    text.toString(),
+                                    textStyle,
+                                )
 
-                            false -> {}
-                        }
-                    }, enabled = textFieldState.text.isNotBlank()
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = confirmDescription,
-                    )
+                                false -> {}
+                            }
+                        }, enabled = textFieldState.text.isNotBlank()
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Check,
+                            contentDescription = confirmDescription,
+                        )
+                    }
                 }
             }
         }
