@@ -115,7 +115,10 @@ fun TextEditorOverlay(
         ) {
             val cancelDescription = stringResource(R.string.cancel_action)
             ToolbarTooltip(cancelDescription) {
-                IconButton(onClick = onDismiss) {
+                IconButton(
+                    onClick = onDismiss,
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
+                ) {
                     Icon(
                         Icons.Default.Close,
                         contentDescription = cancelDescription,
@@ -136,7 +139,9 @@ fun TextEditorOverlay(
 
                             false -> {}
                         }
-                    }, enabled = textFieldState.text.isNotBlank()
+                    },
+                    enabled = textFieldState.text.isNotBlank(),
+                    colors = IconButtonDefaults.iconButtonColors(contentColor = Color.White),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
