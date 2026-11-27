@@ -12,7 +12,6 @@ import android.graphics.Matrix
 import androidx.exifinterface.media.ExifInterface
 import android.net.Uri
 import android.view.View
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Canvas
@@ -27,7 +26,6 @@ import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextMeasurer
-import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.unit.Density
@@ -57,6 +55,8 @@ import org.lineageos.canvas.ext.adjustWarmth
 import org.lineageos.canvas.ext.applyPreset
 import org.lineageos.canvas.ext.applyGrey
 import org.lineageos.canvas.ext.applySepia
+import org.lineageos.canvas.ext.drawTextLabel
+import org.lineageos.canvas.ext.measureLabel
 import org.lineageos.canvas.ext.size
 import org.lineageos.canvas.models.Action
 import org.lineageos.canvas.models.HistoryList
@@ -352,14 +352,15 @@ class EditViewModel(application: Application) : AndroidViewModel(application) {
                         defaultLayoutDirection = layoutDirection,
                     )
 
-                    drawText(
-                        textMeasurer = textMeasurer,
-                        text = action.text,
-                        topLeft = Offset(
-                            action.position.x.toFloat(),
-                            action.position.y.toFloat(),
+                    drawTextLabel(
+                        textLayoutResult = textMeasurer.measureLabel(
+                            text = action.text,
+                            style = action.style,
+                            background = action.background,
                         ),
-                        style = action.style,
+                        topLeft = action.position.toOffset(),
+                        rotation = action.rotation,
+                        backgroundColor = action.background.backgroundColor(action.style.color),
                     )
                 }
 

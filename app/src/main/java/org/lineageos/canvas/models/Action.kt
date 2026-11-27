@@ -127,13 +127,18 @@ sealed interface Action {
          * Add a text label to the image.
          *
          * @param text The text of the overlay
-         * @param position The position in the image produced by preceding actions
-         * @param style The text style, with font size stored in image pixels
+         * @param position The top left corner of the unrotated text in the image produced by
+         *   preceding actions
+         * @param style The text style, with font size stored in image pixels and the picked color
+         * @param rotation The clockwise rotation in degrees around the center of the text
+         * @param background The background drawn behind the text
          */
         data class Text(
             val text: String,
             val position: IntOffset,
             val style: TextStyle,
+            val rotation: Float = 0f,
+            val background: TextBackground = TextBackground.NONE,
         ) : Drawing
 
         /**
