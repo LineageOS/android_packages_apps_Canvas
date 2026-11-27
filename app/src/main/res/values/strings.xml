@@ -82,6 +82,8 @@
 
     <!-- Text editor -->
     <string name="enter_text">Enter text…</string>
+    <string name="text_edit">Edit text</string>
+    <string name="text_delete">Delete text</string>
 
     <!-- Text decorations -->
     <string name="text_decoration_bold">Bold</string>
@@ -93,6 +95,11 @@
     <string name="text_alignment_left">Left</string>
     <string name="text_alignment_center">Center</string>
     <string name="text_alignment_right">Right</string>
+
+    <!-- Text backgrounds -->
+    <string name="text_background_none">No background</string>
+    <string name="text_background_translucent">Translucent background</string>
+    <string name="text_background_solid">Solid background</string>
 
     <!-- Text colors -->
     <string name="text_color_white">White</string>

@@ -19,12 +19,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.FormatAlignLeft
+import androidx.compose.material.icons.automirrored.filled.FormatAlignRight
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.FormatAlignCenter
 import androidx.compose.material.icons.filled.FormatBold
+import androidx.compose.material.icons.filled.FormatColorFill
+import androidx.compose.material.icons.filled.FormatColorReset
 import androidx.compose.material.icons.filled.FormatItalic
 import androidx.compose.material.icons.filled.FormatStrikethrough
 import androidx.compose.material.icons.filled.FormatUnderlined
+import androidx.compose.material.icons.filled.Opacity
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.Icon
@@ -60,21 +66,47 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.lineageos.canvas.R
+import org.lineageos.canvas.models.TextBackground
 
+/**
+ * Full screen editor to write a text label and pick its style.
+ *
+ * @param onDismiss Called when the editor is closed without confirming
+ * @param onConfirm Called with the text, its style and its background
+ * @param modifier The [Modifier] to apply
+ * @param initialText The text to edit, if any
+ * @param initialStyle The style of the text to edit, if any
+ * @param initialBackground The background of the text to edit
+ */
 @Composable
 fun TextEditorOverlay(
     onDismiss: () -> Unit,
-    onConfirm: (String, TextStyle) -> Unit,
+    onConfirm: (String, TextStyle, TextBackground) -> Unit,
     modifier: Modifier = Modifier,
+    initialText: String = "",
+    initialStyle: TextStyle? = null,
+    initialBackground: TextBackground = TextBackground.NONE,
 ) {
-    val textFieldState = rememberTextFieldState()
+    val textFieldState = rememberTextFieldState(initialText)
 
-    var fontFamily by remember { mutableStateOf(FontFamily.Default) }
-    var textColor by remember { mutableStateOf(Color.White) }
-    var bold by remember { mutableStateOf(false) }
-    var italic by remember { mutableStateOf(false) }
-    var underlined by remember { mutableStateOf(false) }
-    var strikethrough by remember { mutableStateOf(false) }
+    var fontFamily by remember {
+        mutableStateOf(initialStyle?.fontFamily ?: FontFamily.Default)
+    }
+    var textColor by remember { mutableStateOf(initialStyle?.color ?: Color.White) }
+    var bold by remember { mutableStateOf(initialStyle?.fontWeight == FontWeight.Bold) }
+    var italic by remember { mutableStateOf(initialStyle?.fontStyle == FontStyle.Italic) }
+    var underlined by remember {
+        mutableStateOf(
+            initialStyle?.textDecoration?.contains(TextDecoration.Underline) == true
+        )
+    }
+    var strikethrough by remember {
+        mutableStateOf(
+            initialStyle?.textDecoration?.contains(TextDecoration.LineThrough) == true
+        )
+    }
+    var textAlign by remember { mutableStateOf(initialStyle?.textAlign ?: TextAlign.Center) }
+    var background by remember { mutableStateOf(initialBackground) }
 
     val focusRequester = remember { FocusRequester() }
 
@@ -100,7 +132,7 @@ fun TextEditorOverlay(
             strikethrough -> TextDecoration.LineThrough
             else -> TextDecoration.None
         },
-        textAlign = TextAlign.Center,
+        textAlign = textAlign,
     )
 
     Column(
@@ -136,6 +168,7 @@ fun TextEditorOverlay(
                                 true -> onConfirm(
                                     text.toString(),
                                     textStyle,
+                                    background,
                                 )
 
                                 false -> {}
@@ -175,6 +208,40 @@ fun TextEditorOverlay(
                 checked = strikethrough,
                 contentDescription = R.string.text_decoration_strikethrough,
             ) { strikethrough = it }
+
+            TextPropertyButton(
+                imageVector = when (textAlign) {
+                    TextAlign.Start -> Icons.AutoMirrored.Filled.FormatAlignLeft
+                    TextAlign.End -> Icons.AutoMirrored.Filled.FormatAlignRight
+                    else -> Icons.Default.FormatAlignCenter
+                },
+                checked = false,
+                contentDescription = when (textAlign) {
+                    TextAlign.Start -> R.string.text_alignment_left
+                    TextAlign.End -> R.string.text_alignment_right
+                    else -> R.string.text_alignment_center
+                },
+            ) {
+                textAlign = when (textAlign) {
+                    TextAlign.Start -> TextAlign.Center
+                    TextAlign.Center -> TextAlign.End
+                    else -> TextAlign.Start
+                }
+            }
+
+            TextPropertyButton(
+                imageVector = when (background) {
+                    TextBackground.NONE -> Icons.Default.FormatColorReset
+                    TextBackground.TRANSLUCENT -> Icons.Default.Opacity
+                    TextBackground.SOLID -> Icons.Default.FormatColorFill
+                },
+                checked = background != TextBackground.NONE,
+                contentDescription = when (background) {
+                    TextBackground.NONE -> R.string.text_background_none
+                    TextBackground.TRANSLUCENT -> R.string.text_background_translucent
+                    TextBackground.SOLID -> R.string.text_background_solid
+                },
+            ) { background = background.next }
         }
 
         TextPropertiesRow {
@@ -203,7 +270,10 @@ fun TextEditorOverlay(
                 .weight(1f)
                 .padding(horizontal = 16.dp)
                 .focusRequester(focusRequester),
-            textStyle = textStyle,
+            textStyle = textStyle.copy(
+                color = background.textColor(textColor),
+                background = background.backgroundColor(textColor) ?: Color.Unspecified,
+            ),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color.Transparent,
                 unfocusedContainerColor = Color.Transparent,
